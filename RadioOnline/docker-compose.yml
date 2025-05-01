@@ -1,0 +1,45 @@
+networks:
+    app_network:
+        driver: bridge
+services:
+    nginx:
+        image: 'jc21/nginx-proxy-manager:latest'
+        container_name: 'nginx-proxy-manager'
+        restart: always
+        networks:
+            - app_network
+        ports:
+            - '80:80'       # HTTP
+            - '81:81'       # Admin interface
+            - '443:443'     # HTTPS
+        environment:
+            DB_MYSQL_HOST: 'database'
+            DB_MYSQL_PORT: 3306
+            DB_MYSQL_USER: ${DB_USERNAME}
+            DB_MYSQL_PASSWORD: ${DB_DATABASE}
+            DB_MYSQL_NAME: 'nginxproxymanager'
+        volumes:
+            - ./data:/data
+            - ./letsencrypt:/etc/letsencrypt
+
+    database:
+        image: 'mariadb:latest'
+        container_name: 'database'
+        restart: always
+        networks:
+            - app_network
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+
+    icecast:
+        image: 'pltnk/icecast2'
+        container_name: icecast2
+        restart: always
+        ports:
+            - 8000:8000
+        volumes:
+            - ./icecast/icecast.xml:/etc/icecast2/icecast.xml
