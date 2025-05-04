@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/RadioOnline/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/RadioOnline/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/RadioOnline/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/brianium/paratest" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/carbonphp/carbon-doctrine-types" />
@@ -131,6 +133,8 @@
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laravel/sanctum" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/spatie/laravel-permission" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
