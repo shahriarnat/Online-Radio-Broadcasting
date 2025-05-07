@@ -16,9 +16,14 @@ return new class extends Migration {
             $table->string('artist');
             $table->string('album')->nullable();
             $table->string('cover')->nullable();
+            $table->string('file');
             $table->integer('duration')->comment('Duration in seconds');
-            $table->enum('genre', ['Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic', 'Country', 'Reggae', 'Blues', 'Folk'])->nullable();
+
+            $table->unsignedBigInteger('genre_id')->comment('Genre name');
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('restrict');
+
             $table->integer('quest_like')->comment('Number of likes from guest users')->default(0);
+            $table->boolean('is_ads')->default(0);
             $table->timestamps();
         });
     }

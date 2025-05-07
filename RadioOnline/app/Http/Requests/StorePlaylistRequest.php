@@ -24,7 +24,6 @@ class StorePlaylistRequest extends FormRequest
         return [
             'name' => 'required|string|unique:playlists,name|max:255',
             'description' => 'nullable|string|max:1000',
-            'image' => 'required|file|mimes:jpeg,png,jpg|max:512',
             'start_play' => 'required|date_format:H:i',
             'end_play' => 'required|date_format:H:i|after_or_equal:start_play',
             'activate' => 'required|boolean',

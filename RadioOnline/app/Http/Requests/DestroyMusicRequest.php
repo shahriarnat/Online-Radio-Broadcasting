@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyPlaylistRequest extends FormRequest
+class DestroyMusicRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,15 +22,7 @@ class DestroyPlaylistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:playlists,id',
+            //
         ];
     }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'id' => $this->route('id'),
-        ]);
-    }
-
 }

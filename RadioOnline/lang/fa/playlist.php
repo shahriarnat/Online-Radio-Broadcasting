@@ -3,4 +3,8 @@
 return [
     'empty' => 'پلی لیست خالی است.',
     'not_found' => 'پلی لیست پیدا نشد.',
+    'playlist_created' => 'پلی لیست با موفقیت ایجاد شد.',
+    'playlist_updated' => 'پلی لیست با موفقیت به روز شد.',
+    'playlist_deleted' => 'پلی لیست با موفقیت حذف شد.',
+    'playlist_music_position_updated' => 'موقعیت موسیقی با موفقیت به روز شد.',
 ];

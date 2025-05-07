@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyPlaylistRequest extends FormRequest
+class ShowMusicRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class DestroyPlaylistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:playlists,id',
+            'id' => 'required|integer|exists:musics,id',
         ];
     }
 
