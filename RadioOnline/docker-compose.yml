@@ -41,3 +41,13 @@ services:
         restart: always
         volumes:
             - ./icecast/icecast.xml:/etc/icecast2/icecast.xml
+    backend:
+        build:
+            context: .
+            dockerfile: ./docker/backend.Dockerfile
+        container_name: backend
+        restart: always
+        networks:
+            - app_network
+        volumes:
+            - .:/var/www/html:ro
