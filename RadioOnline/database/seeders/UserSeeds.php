@@ -13,7 +13,7 @@ class UserSeeds extends Seeder
      */
     public function run(): void
     {
-        $user = ['name' => 'Super Admin', 'email' => 'admin@admin.admin', 'password' => Hash::make('admin')];
+        $user = ['name' => 'Super Admin', 'email' => 'admin@admin.admin', 'password' => Hash::make('admin@123456')];
         User::query()->firstOrCreate($user);
     }
 }
