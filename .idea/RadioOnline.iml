@@ -133,8 +133,11 @@
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laminas/laminas-diactoros" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laravel/octane" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laravel/sanctum" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/symfony/psr-http-message-bridge" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -14,26 +14,27 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
+	libgettextpo-dev \
+	gettext \
     cron \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install gettext pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Add user for Laravel
-RUN groupadd -g 1000 www && useradd -u 1000 -ms /bin/bash -g www www
+COPY . .
 
-# Change ownership of the working directory
-RUN chown -R www:www /var/www/html
-
-# Switch to the new user
-USER www
+RUN composer install --optimize-autoloader --no-dev \
+    && php artisan octane:install --no-interaction \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
 # Expose port 9000 and start PHP-FPM server
 EXPOSE 9000
 
 # Add Laravel scheduler to cron
-RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u www -
+RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
 
 # Start cron and PHP-FPM
-CMD ["sh", "-c", "cron && php-fpm"]
+CMD ["sh", "-c", "cron && php-fpm && php artisan octane:start --host=0.0.0.0 --port=8000 --workers=4"]

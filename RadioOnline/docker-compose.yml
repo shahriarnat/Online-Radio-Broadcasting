@@ -12,15 +12,9 @@ services:
             - '80:80'       # HTTP
             - '81:81'       # Admin interface
             - '443:443'     # HTTPS
-        environment:
-            DB_MYSQL_HOST: 'database'
-            DB_MYSQL_PORT: 3306
-            DB_MYSQL_USER: ${DB_USERNAME}
-            DB_MYSQL_PASSWORD: ${DB_DATABASE}
-            DB_MYSQL_NAME: 'nginxproxymanager'
         volumes:
-            - ./data:/data
-            - ./letsencrypt:/etc/letsencrypt
+            - ./docker/data:/data
+            - ./docker/data/letsencrypt:/etc/letsencrypt
 
     database:
         image: 'mariadb:latest'
@@ -33,7 +27,7 @@ services:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
         volumes:
-            - ./data/mysql:/var/lib/mysql
+            - ./docker/data/mysql:/var/lib/mysql
 
     icecast:
         image: 'pltnk/icecast2'
@@ -51,4 +45,4 @@ services:
         networks:
             - app_network
         volumes:
-            - .:/var/www/html:ro
+            - .:/var/www/html
