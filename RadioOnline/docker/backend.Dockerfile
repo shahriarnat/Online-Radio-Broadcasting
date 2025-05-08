@@ -30,14 +30,12 @@ RUN composer install --optimize-autoloader --no-dev \
     && php artisan octane:install --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache \
-    && service supervisor start
+    && php artisan view:cache
+
+RUN service supervisor start
 
 # Expose port 8000,9000 and start PHP-FPM server
 EXPOSE 8000 9000
-
-# Add Laravel scheduler to cron
-RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
 
 # Start cron and PHP-FPM
 ENTRYPOINT ["supervisorctl", "start", "all"]
