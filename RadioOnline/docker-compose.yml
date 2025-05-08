@@ -42,8 +42,6 @@ services:
             dockerfile: ./docker/backend.Dockerfile
         container_name: backend
         restart: always
-        ports:
-            - '8000:8000'
         networks:
             - app_network
         volumes:
