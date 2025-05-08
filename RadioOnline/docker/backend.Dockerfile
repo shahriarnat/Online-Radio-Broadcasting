@@ -24,10 +24,13 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
 COPY . .
+COPY ./docker/supervisor/supervisord.conf /etc/supervisor/
 COPY ./docker/supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
 
+RUN chmod -R 755 ./storag
+
 RUN composer install --optimize-autoloader --no-dev \
-    && php artisan octane:install --no-interaction \
+    && php artisan octane:install --server=frankenphp --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
@@ -38,4 +41,4 @@ RUN service supervisor start
 EXPOSE 8000 9000
 
 # Start cron and PHP-FPM
-ENTRYPOINT ["supervisorctl", "start", "all"]
+CMD /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
