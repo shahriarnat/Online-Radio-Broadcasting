@@ -27,7 +27,7 @@ COPY . .
 COPY ./docker/supervisor/supervisord.conf /etc/supervisor/
 COPY ./docker/supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
 
-RUN chmod -R 755 ./storag
+RUN chmod -R 755 ./storage
 
 RUN composer install --optimize-autoloader --no-dev \
     && php artisan octane:install --server=frankenphp --no-interaction \
