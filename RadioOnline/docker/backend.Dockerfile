@@ -23,8 +23,8 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-COPY ./supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
 COPY . .
+COPY ./docker/supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
 
 RUN composer install --optimize-autoloader --no-dev \
     && php artisan octane:install --no-interaction \
