@@ -17,11 +17,13 @@ RUN apt-get update && apt-get install -y \
 	libgettextpo-dev \
 	gettext \
     cron \
+    supervisor \
     && docker-php-ext-install gettext pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
+COPY ./supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev \
@@ -37,4 +39,4 @@ EXPOSE 8000 9000
 RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
 
 # Start cron and PHP-FPM
-CMD ["sh", "-c", "php-fpm && php artisan octane:start --host=0.0.0.0 --port=8000 --workers=4"]
+CMD []
