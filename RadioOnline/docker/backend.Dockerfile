@@ -30,7 +30,8 @@ RUN composer install --optimize-autoloader --no-dev \
     && php artisan octane:install --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
-    && php artisan view:cache
+    && php artisan view:cache \
+    && service supervisor start
 
 # Expose port 8000,9000 and start PHP-FPM server
 EXPOSE 8000 9000
