@@ -37,4 +37,4 @@ EXPOSE 8000 9000
 RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
 
 # Start cron and PHP-FPM
-CMD ["php artisan octane:start --host=0.0.0.0 --port=8000 --workers=4"]
+CMD ["sh", "-c", "php-fpm && php artisan octane:start --host=0.0.0.0 --port=8000 --workers=4"]
