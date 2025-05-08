@@ -31,7 +31,7 @@ RUN composer install --optimize-autoloader --no-dev \
     && php artisan view:cache
 
 # Expose port 8000,9000 and start PHP-FPM server
-EXPOSE 8000,9000
+EXPOSE 8000 9000
 
 # Add Laravel scheduler to cron
 RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
