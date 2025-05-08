@@ -174,8 +174,34 @@
     </mount>
     -->
 
+    <!--
     <mount>
         <mount-name>/live.mp3</mount-name>
+    </mount>
+    -->
+
+    <mount type="normal">
+        <mount-name>/music.mp3</mount-name>
+        <authentication type="url">
+            <option name="mount_add"       value="https://dash.livemst.com/api/icecast/mount/add"/>
+            <option name="mount_remove"    value="https://dash.livemst.com/api/icecast/mount/remove"/>
+            <option name="listener_add"    value="https://dash.livemst.com/api/icecast/listener/add"/>
+            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>
+            <option name="headers"         value="x-pragma,x-token"/>
+            <option name="header_prefix"   value="ClientHeader."/>
+        </authentication>
+    </mount>
+
+    <mount type="normal">
+        <mount-name>/live.mp3</mount-name>
+        <authentication type="url">
+            <option name="mount_add"       value="https://dash.livemst.com/api/icecast/mount/add"/>
+            <option name="mount_remove"    value="https://dash.livemst.com/api/icecast/mount/remove"/>
+            <option name="listener_add"    value="https://dash.livemst.com/api/icecast/listener/add"/>
+            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>
+            <option name="headers"         value="x-pragma,x-token"/>
+            <option name="header_prefix"   value="ClientHeader."/>
+        </authentication>
     </mount>
 
     <!--
