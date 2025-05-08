@@ -24,10 +24,8 @@ services:
             - app_network
         environment:
             PMA_HOST: database
-            PMA_USER: ${DB_USERNAME}
-            PMA_PASSWORD: ${DB_PASSWORD}
         ports:
-            - '8080:80'
+            - '8001:80'
 
     database:
         image: 'mariadb:latest'
