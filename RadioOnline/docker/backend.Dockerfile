@@ -39,4 +39,4 @@ EXPOSE 8000 9000
 RUN echo "* * * * * www php /var/www/html/artisan schedule:run >> /dev/null 2>&1" | crontab -u root -
 
 # Start cron and PHP-FPM
-CMD []
+ENTRYPOINT ["supervisorctl", "start", "all"]
