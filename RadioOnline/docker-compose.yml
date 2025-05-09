@@ -45,8 +45,8 @@ services:
         container_name: icecast
         restart: always
         ports:
-            - '8000:8000'
-            - '127.0.0.1:8001:8001'
+            - '1990:1990'
+            - '127.0.0.1:1980:1980'
         networks:
             - app_network
         volumes:

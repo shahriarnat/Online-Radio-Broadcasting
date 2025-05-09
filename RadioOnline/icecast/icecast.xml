@@ -67,12 +67,12 @@
 
     <!-- Streaming port (public) -->
     <listen-socket>
-        <port>8000</port>
+        <port>1990</port>
     </listen-socket>
 
     <!-- Admin port (private / restricted) -->
     <listen-socket>
-        <port>8001</port>
+        <port>1980</port>
     </listen-socket>
 
 
