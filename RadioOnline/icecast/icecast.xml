@@ -39,10 +39,8 @@
         <relay-password>relay.hYjp8mVa7kvSKxBQH4zDT6RLP</relay-password>
 
         <!-- Admin logs in with the username given below -->
-        <admin>
-            <admin-user>admin</admin-user>
-            <admin-password>admin.kcDSCEw9TzguhHM5ZFRpB28U4vxmj6Pt7G</admin-password>
-        </admin>
+        <admin-user>admin</admin-user>
+        <admin-password>admin.kcDSCEw9TzguhHM5ZFRpB28U4vxmj6Pt7G</admin-password>
     </authentication>
 
     <!-- set the mountpoint for a shoutcast source to use, the default if not
