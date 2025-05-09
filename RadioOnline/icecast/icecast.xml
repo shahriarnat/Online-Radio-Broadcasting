@@ -70,18 +70,12 @@
         <port>1990</port>
     </listen-socket>
 
-    <!-- Admin port (private / restricted) -->
-    <listen-socket>
-        <port>1980</port>
-    </listen-socket>
-
-
     <!-- You may have multiple <listen-socket> elements -->
-<!--    <listen-socket>-->
-<!--        <port>1990</port>-->
-<!--        &lt;!&ndash; <bind-address>0.0.0.0</bind-address> &ndash;&gt;-->
-<!--        &lt;!&ndash; <shoutcast-mount>/live.mp3</shoutcast-mount> &ndash;&gt;-->
-<!--    </listen-socket>-->
+    <!--    <listen-socket>-->
+    <!--        <port>1990</port>-->
+    <!--        &lt;!&ndash; <bind-address>0.0.0.0</bind-address> &ndash;&gt;-->
+    <!--        &lt;!&ndash; <shoutcast-mount>/live.mp3</shoutcast-mount> &ndash;&gt;-->
+    <!--    </listen-socket>-->
     <!--
     <listen-socket>
         <port>8080</port>
@@ -185,35 +179,33 @@
     </mount>
     -->
 
-    <!--
     <mount>
         <mount-name>/live.mp3</mount-name>
     </mount>
-    -->
 
-    <mount type="normal">
-        <mount-name>/music.mp3</mount-name>
-        <authentication type="url">
-            <option name="mount_add" value="https://dash.livemst.com/api/icecast/mount/add"/>
-            <option name="mount_remove" value="https://dash.livemst.com/api/icecast/mount/remove"/>
-            <option name="listener_add" value="https://dash.livemst.com/api/icecast/listener/add"/>
-            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>
-            <option name="headers" value="x-pragma,x-token"/>
-            <option name="header_prefix" value="ClientHeader."/>
-        </authentication>
-    </mount>
+    <!--    <mount type="normal">-->
+    <!--        <mount-name>/music.mp3</mount-name>-->
+    <!--        <authentication type="url">-->
+    <!--            <option name="mount_add" value="https://dash.livemst.com/api/icecast/mount/add"/>-->
+    <!--            <option name="mount_remove" value="https://dash.livemst.com/api/icecast/mount/remove"/>-->
+    <!--            <option name="listener_add" value="https://dash.livemst.com/api/icecast/listener/add"/>-->
+    <!--            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>-->
+    <!--            <option name="headers" value="x-pragma,x-token"/>-->
+    <!--            <option name="header_prefix" value="ClientHeader."/>-->
+    <!--        </authentication>-->
+    <!--    </mount>-->
 
-    <mount type="normal">
-        <mount-name>/live.mp3</mount-name>
-        <authentication type="url">
-            <option name="mount_add" value="https://dash.livemst.com/api/icecast/mount/add"/>
-            <option name="mount_remove" value="https://dash.livemst.com/api/icecast/mount/remove"/>
-            <option name="listener_add" value="https://dash.livemst.com/api/icecast/listener/add"/>
-            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>
-            <option name="headers" value="x-pragma,x-token"/>
-            <option name="header_prefix" value="ClientHeader."/>
-        </authentication>
-    </mount>
+    <!--    <mount type="normal">-->
+    <!--        <mount-name>/live.mp3</mount-name>-->
+    <!--        <authentication type="url">-->
+    <!--            <option name="mount_add" value="https://dash.livemst.com/api/icecast/mount/add"/>-->
+    <!--            <option name="mount_remove" value="https://dash.livemst.com/api/icecast/mount/remove"/>-->
+    <!--            <option name="listener_add" value="https://dash.livemst.com/api/icecast/listener/add"/>-->
+    <!--            <option name="listener_remove" value="https://dash.livemst.com/api/icecast/listener/remove"/>-->
+    <!--            <option name="headers" value="x-pragma,x-token"/>-->
+    <!--            <option name="header_prefix" value="ClientHeader."/>-->
+    <!--        </authentication>-->
+    <!--    </mount>-->
 
     <!--
     <mount type="normal">
@@ -253,7 +245,7 @@
              this example will redirect all requests for http://server:port/ to
              the status page
         -->
-        <alias source="/" destination="/status.xsl"/>
+        <alias source="/icecast/ext-status" destination="/status.xsl"/>
         <!-- The certificate file needs to contain both public and private part.
              Both should be PEM encoded.
         <ssl-certificate>/usr/share/icecast2/icecast.pem</ssl-certificate>
