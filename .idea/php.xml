@@ -142,6 +142,7 @@
       <path value="$PROJECT_DIR$/RadioOnline/vendor/laravel/octane" />
       <path value="$PROJECT_DIR$/RadioOnline/vendor/symfony/psr-http-message-bridge" />
       <path value="$PROJECT_DIR$/RadioOnline/vendor/laminas/laminas-diactoros" />
+      <path value="$PROJECT_DIR$/RadioOnline/vendor/james-heinrich/getid3" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

@@ -133,6 +133,7 @@
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/james-heinrich/getid3" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laminas/laminas-diactoros" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laravel/octane" />
       <excludeFolder url="file://$MODULE_DIR$/RadioOnline/vendor/laravel/sanctum" />
