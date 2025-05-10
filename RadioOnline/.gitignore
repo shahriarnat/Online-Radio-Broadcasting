@@ -22,7 +22,7 @@ yarn-error.log
 /.vscode
 /.zed
 /docker/data/
-
+/.idea
 **/caddy
 frankenphp
 frankenphp-worker.php
