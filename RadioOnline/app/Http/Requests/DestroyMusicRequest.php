@@ -11,7 +11,7 @@ class DestroyMusicRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class DestroyMusicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => 'required|exists:musics,id',
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
+    }
 }
+

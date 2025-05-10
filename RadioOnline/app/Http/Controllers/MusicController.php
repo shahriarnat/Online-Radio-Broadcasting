@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use app\Helpers\ApiResponse;
+use App\Http\Requests\DestroyMusicRequest;
 use App\Http\Requests\ShowMusicRequest;
 use App\Http\Requests\StoreMusicRequest;
+use App\Http\Requests\UpdateMusicRequest;
 use App\Models\Genre;
 use App\Models\Music;
 use App\Services\Interfaces\MediaServiceInterface;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Ramsey\Uuid\Generator\RandomBytesGenerator;
 
 class MusicController extends Controller
 {
@@ -32,15 +30,26 @@ class MusicController extends Controller
         $musics = Music::all();
         collect($musics)->each(function ($music) {
             $music->playlists = $music->playlists()->get(['name']);
+            $music->genre = $music->genre()->first(['id', 'name']);
         });
         return ApiResponse::success($musics);
     }
 
     public function show(ShowMusicRequest $id): JsonResponse
     {
-        // Retrieve a single music record by ID
-        $music = Music::find($id);
-        return ApiResponse::success($music);
+        try {
+            $music = Music::findOrFail($id)->first();
+
+            $music->playlists = $music->playlists()->get(['name']);
+            $music->genre = $music->genre()->first(['id', 'name']);
+
+            $music->music = asset(Storage::url($music->music));
+            $music->cover = asset(Storage::url($music->cover));
+
+            return ApiResponse::success($music, __('music.show'));
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 
     public function store(StoreMusicRequest $request): JsonResponse
@@ -51,7 +60,7 @@ class MusicController extends Controller
 
             $cover = $metadata->getCoverBinary();
             if ($cover) {
-                $coverPath = 'covers/' . Str::random(36) . '.' . $cover['image_ext'];
+                $coverPath = 'covers/' . Str::random(32) . '.' . $cover['image_ext'];
                 Storage::disk('public')->put($coverPath, $cover['data']);
                 $cover = $coverPath;
             }
@@ -74,20 +83,53 @@ class MusicController extends Controller
         }
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(UpdateMusicRequest $request, $id): JsonResponse
     {
         // Update an existing music record
-        $music = Music::findOrFail($id);
-        $music->update($request->all());
-        return response()->json($music);
+        try {
+            $music = Music::findOrFail($id);
+
+            $cover = $request->hasFile('cover') ? $request->file('cover')->store('covers', 'public') : $music->cover;
+
+            $music->title = $request->input('title');
+            $music->artist = $request->input('artist');
+            $music->album = $request->input('album');
+            $music->genre_id = $request->input('genre_id');
+            $music->is_ads = $request->input('is_ads');
+            $music->cover = $cover;
+
+            $music->save();
+
+            $music->playlists()->sync(Str::of($request->input('playlists'))->explode(','));
+            $music->playlists = $music->playlists()->get(['name']);
+
+            $music->genre_id = $music->genre()->first(['id', 'name']);
+
+            $music->music = asset(Storage::url($music->music));
+            $music->cover = asset(Storage::url($music->cover));
+
+            return ApiResponse::success($music, __('music.updated'));
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(DestroyMusicRequest $id): JsonResponse
     {
         // Delete a music record
-        $music = Music::findOrFail($id);
+        $music = Music::findOrFail($id)->first();
+
+        if (Storage::disk('public')->exists($music->music)) {
+            $music_file = Storage::disk('public')->delete($music->music);
+        }
+
+        if (Storage::disk('public')->exists($music->cover)) {
+            $cover_file = Storage::disk('public')->delete($music->cover);
+        }
+
         $music->delete();
-        return response()->json(null, 204);
+
+        return ApiResponse::success(null, __('music.deleted'));
     }
 
     public function genres(): JsonResponse

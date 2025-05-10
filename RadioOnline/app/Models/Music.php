@@ -16,9 +16,18 @@ class Music extends Model
         'duration',
         'genre_id',
     ];
+    protected $casts = [
+        'is_ads' => 'boolean',
+    ];
 
     public function playlists()
     {
         return $this->belongsToMany(Playlist::class, 'playlist_music');
     }
+
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
+
 }

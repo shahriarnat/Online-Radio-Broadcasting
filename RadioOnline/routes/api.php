@@ -10,7 +10,13 @@ Route::prefix('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
 });
 
-Route::prefix('playlist')/*->middleware('auth:sanctum')*/ ->group(function () {
+/*
+ * The following section defines routes for the 'playlist' resource, which are protected by the 'auth:sanctum' middleware.
+ * These routes allow authenticated users to perform CRUD operations on playlists, such as retrieving all playlists,
+ * viewing a specific playlist, creating a new playlist, updating an existing playlist, deleting a playlist,
+ * and updating the position of music within a playlist.
+ */
+Route::prefix('playlist')->middleware('auth:sanctum')->group(function () {
     Route::get('all', [PlaylistController::class, 'index'])->name('playlist.all');
     Route::get('show/{id}', [PlaylistController::class, 'show'])->name('playlist.show');
     Route::post('store', [PlaylistController::class, 'store'])->name('playlist.store');
@@ -19,11 +25,17 @@ Route::prefix('playlist')/*->middleware('auth:sanctum')*/ ->group(function () {
     Route::put('update-position', [PlaylistController::class, 'updateMusicPosition'])->name('playlist.updateMusicPosition');
 });
 
-Route::prefix('music')/*->middleware('auth:sanctum')*/ ->group(function () {
+/*
+ * The following section defines routes for the 'music' resource, which are protected by the 'auth:sanctum' middleware.
+ * These routes allow authenticated users to perform CRUD operations on music records, such as retrieving all music,
+ * viewing a specific music record, creating a new music record, updating an existing music record, and deleting a music record.
+ * Additionally, it includes a route to retrieve all available genres associated with music records.
+ */
+Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::get('all', [MusicController::class, 'index'])->name('music.all');
     Route::get('show/{id}', [MusicController::class, 'show'])->name('music.show');
     Route::post('store', [MusicController::class, 'store'])->name('music.store');
-    Route::put('update/{id}', [MusicController::class, 'update'])->name('music.update');
+    Route::post('update/{id}', [MusicController::class, 'update'])->name('music.update');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('music.all');
 });
