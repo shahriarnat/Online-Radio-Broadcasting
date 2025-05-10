@@ -26,6 +26,7 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 COPY . .
 COPY ./docker/supervisor/supervisord.conf /etc/supervisor/
 COPY ./docker/supervisor/supervisor-backend.conf /etc/supervisor/conf.d/
+COPY ./docker/php/custom.conf /usr/local/etc/php/conf.d/
 
 RUN chmod -R 755 ./storage
 

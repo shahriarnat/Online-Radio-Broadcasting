@@ -25,4 +25,5 @@ Route::prefix('music')/*->middleware('auth:sanctum')*/ ->group(function () {
     Route::post('store', [MusicController::class, 'store'])->name('music.store');
     Route::put('update/{id}', [MusicController::class, 'update'])->name('music.update');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
+    Route::get('genre/all', [MusicController::class, 'genres'])->name('music.all');
 });

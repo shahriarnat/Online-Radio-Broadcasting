@@ -22,15 +22,7 @@ class StoreMusicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'artist' => 'required|string|max:255',
-            'album' => 'nullable|string|max:255',
-            'cover' => 'required|file|mimes:jpg,jpeg,png|max:512|image,dimensions:min_width=200,min_height=200',
-            'file' => 'required|file|mimes:mp3',
-            'duration' => 'required|integer|min:1',
-            /* @todo add genre reference */
-            'genre' => 'nullable|string|max:255',
-            'is_ads' => 'required|boolean',
+            //'music' => 'required|file|mimes:mp3|max:51200',
         ];
 
     }

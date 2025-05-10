@@ -12,9 +12,9 @@ class Music extends Model
         'artist',
         'album',
         'cover',
-        'genre',
+        'music',
         'duration',
-        'file_path',
+        'genre_id',
     ];
 
     public function playlists()
