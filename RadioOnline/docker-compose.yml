@@ -63,6 +63,11 @@ services:
             - .:/var/www/html
         environment:
             - TZ=Asia/Tehran
+        depends_on:
+            - database
+            - nginx
+            - liquidsoap
+            - icecast
 
     liquidsoap:
         image: phasecorex/liquidsoap
