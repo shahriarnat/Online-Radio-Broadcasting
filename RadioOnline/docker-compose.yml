@@ -61,6 +61,8 @@ services:
             - app_network
         volumes:
             - .:/var/www/html
+        environment:
+            - TZ=Asia/Tehran
 
     liquidsoap:
         image: phasecorex/liquidsoap

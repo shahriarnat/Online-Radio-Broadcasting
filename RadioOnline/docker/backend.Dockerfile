@@ -1,9 +1,6 @@
 # Use the official PHP image with FPM
 FROM php:8.4-fpm
 
-# Set working directory
-WORKDIR /var/www/html
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -22,6 +19,9 @@ RUN apt-get update && apt-get install -y \
 
 # Install Composer
 COPY --from=composer:2.8.9 /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html
 
 COPY . .
 COPY ./docker/supervisor/supervisord.conf /etc/supervisor/
