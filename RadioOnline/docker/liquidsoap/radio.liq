@@ -21,9 +21,9 @@ radio = fallback(track_sensitive=false, [queue, live_music_mix])
 output.icecast(
   %mp3,
   host = "icecast",
-  port = 2990,
+  port = 1990,
   password = "source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
-  mount = "/music.mp3",
+  mount = "/stream",
   radio
 )
 
