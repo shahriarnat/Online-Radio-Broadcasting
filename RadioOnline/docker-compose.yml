@@ -63,7 +63,8 @@ services:
             - .:/var/www/html
 
     liquidsoap:
-        image: savonet/liquidsoap
+        image: phasecorex/liquidsoap
+        container_name: liquidsoap
         volumes:
             - ./liquidsoap/radio.liq:/liquidsoap/radio.liq
             - ../../storage/app/public/musics:/musics
@@ -73,3 +74,6 @@ services:
         networks:
             - app_network
         command: [ "liquidsoap", "/liquidsoap/radio.liq" ]
+        environment:
+            - TZ=Asia/Tehran
+        restart: always
