@@ -30,9 +30,8 @@ COPY ./docker/php/custom.conf /usr/local/etc/php/conf.d/
 
 RUN chmod -R 755 ./storage
 
-RUN composer install --optimize-autoloader --no-dev
-
-RUN    php artisan octane:install --server=frankenphp --no-interaction \
+RUN composer install --optimize-autoloader --no-dev \
+    && php artisan octane:install --server=frankenphp --no-interaction \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
