@@ -13,8 +13,8 @@ services:
             - '81:81'       # Admin interface
             - '443:443'     # HTTPS
         volumes:
-            - ./docker/data:/data
-            - ./docker/data/letsencrypt:/etc/letsencrypt
+            - ~/docker/data:/data
+            - ~/docker/data/letsencrypt:/etc/letsencrypt
 
     phpmyadmin:
         image: 'phpmyadmin/phpmyadmin:latest'
@@ -38,7 +38,7 @@ services:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
         volumes:
-            - ./docker/data/mysql:/var/lib/mysql
+            - ~/docker/data/mysql:/var/lib/mysql
 
     icecast:
         image: 'pltnk/icecast2'
