@@ -22,7 +22,7 @@ class StoreMusicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //'music' => 'required|file|mimes:mp3|max:51200',
+            'music' => 'required|file|mimes:mp3|max:51200',
         ];
 
     }

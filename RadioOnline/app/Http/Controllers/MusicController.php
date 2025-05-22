@@ -74,8 +74,8 @@ class MusicController extends Controller
                 'duration' => $metadata->getDuration(),
             ]);
 
-            $data->cover = asset(Storage::url($cover));
-            $data->music = asset(Storage::url($music));
+            $data->cover = $cover ? asset(Storage::url($cover)) : null;
+            $data->music = $music ? asset(Storage::url($music)) : null;
 
             return ApiResponse::success($data, __('music.created'), 201);
         } catch (\Exception $e) {
@@ -119,12 +119,12 @@ class MusicController extends Controller
         // Delete a music record
         $music = Music::findOrFail($id)->first();
 
-        if (Storage::disk('public')->exists($music->music)) {
-            $music_file = Storage::disk('public')->delete($music->music);
+        if ($music->music && Storage::disk('public')->exists($music->music)) {
+            Storage::disk('public')->delete($music->music);
         }
 
-        if (Storage::disk('public')->exists($music->cover)) {
-            $cover_file = Storage::disk('public')->delete($music->cover);
+        if ($music->cover && Storage::disk('public')->exists($music->cover)) {
+            Storage::disk('public')->delete($music->cover);
         }
 
         $music->delete();

@@ -61,3 +61,15 @@ services:
             - app_network
         volumes:
             - .:/var/www/html
+
+    liquidsoap:
+        image: savonet/liquidsoap
+        volumes:
+            - ./liquidsoap/radio.liq:/liquidsoap/radio.liq
+            - ../../storage/app/public/musics:/musics
+        ports:
+            - 127.0.0.1:1234:1234   # Telnet API
+            - 8080:80   # HTTP API
+        networks:
+            - app_network
+        command: [ "liquidsoap", "/liquidsoap/radio.liq" ]
