@@ -6,15 +6,18 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gettext pdo_mysql mbstring exif pcntl bcmath gd zip
 
 COPY --from=composer:2.8.9 /usr/bin/composer /usr/bin/composer
+# Install Composer manually
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 
 WORKDIR /var/www/html
+
+# Now copy the full source
+COPY . .
 
 # Copy only composer files first to leverage Docker caching
 COPY composer.json composer.lock ./
 RUN composer install --optimize-autoloader --no-dev
-
-# Now copy the full source
-COPY . .
 
 # Copy configs
 COPY ./docker/supervisor/supervisord.conf /etc/supervisor/
