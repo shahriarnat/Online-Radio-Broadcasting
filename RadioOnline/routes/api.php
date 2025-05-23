@@ -39,3 +39,4 @@ Route::prefix('music')/*->middleware('auth:sanctum')*/->group(function () {
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('genre.all');
 });
+

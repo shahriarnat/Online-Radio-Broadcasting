@@ -60,7 +60,7 @@ services:
         networks:
             - app_network
         volumes:
-            - .:/var/www/html
+            - ./:/var/www/html
         environment:
             - TZ=Asia/Tehran
         depends_on:
@@ -70,7 +70,7 @@ services:
             - icecast
 
     liquidsoap:
-        image: phasecorex/liquidsoap
+        image: savonet/liquidsoap:v2.3.1
         container_name: liquidsoap
         volumes:
             - ./docker/liquidsoap/radio.liq:/liquidsoap/radio.liq
