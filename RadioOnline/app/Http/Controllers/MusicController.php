@@ -57,7 +57,7 @@ class MusicController extends Controller
         try {
             $music = $request->file('music')->store('musics', 'public');
             $metadata = $this->mediaService->analyzeFile(public_path(Storage::url($music)));
-dd($metadata);
+
             $cover = $metadata->getCoverBinary();
             if ($cover) {
                 $coverPath = 'covers/' . Str::random(32) . '.' . $cover['image_ext'];

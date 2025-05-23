@@ -34,4 +34,5 @@ CMD composer update --optimize-autoloader --no-dev \
 && yes | php artisan key:generate \
 && php artisan config:clear \
 && php artisan optimize:clear \
+&& php artisan storage:link --silent \
 && /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
