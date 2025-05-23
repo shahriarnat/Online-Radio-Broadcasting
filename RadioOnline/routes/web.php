@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/track', function () {
+Route::get('/track.pls', function () {
     $randomMusic = Music::inRandomOrder()->first();
     return asset(Storage::url($randomMusic->music));
 });
