@@ -1,32 +1,40 @@
-# Load 2 remote streams
-music = input.http("http://icecast:1990/music.mp3")
-live = input.http("http://icecast:1990/live.mp3")
+#!/usr/bin/liquidsoap
 
-# Mix both streams together
-live_music_mix = add([music, live])
+settings.init.allow_root := true
+settings.log.level := 1
 
-# Queue for uploaded tracks
-queue_raw = request.queue(id="main")
+settings.server.telnet := false
+settings.server.telnet.port := 1234
 
-# Crossfade queue + safe fallback to silence if it fails
-queue = fallback(track_sensitive=false, [
-  crossfade(start_next=3.0, fade_out=2.0, fade_in=2.0, queue_raw),
-  blank()
-])
+settings.crossfade.assume_autocue := true
 
-# Main priority: queue first, fallback to live+music stream
-radio = fallback(track_sensitive=false, [queue, live_music_mix])
+settings.autocue.preferred := "internal"
 
-# Output to Icecast
+settings.init.force_start := true
+
+# Inputs
+music = mksafe(input.http("http://127.0.0.1:1990/music.mp3"))
+live  = mksafe(input.http("http://127.0.0.1:1990/live.mp3"))
+#playlist = mksafe(playlist("https://dash.livemst.com/track.pls"))
+
+# Function to get the next track URL from your API
+def fetch_next_track()
+  url = get_process_output("curl -s https://dash.livemst.com/track.pls")
+  log("Next track URL: #{url}")
+  request.create(url)
+end
+
+# Request source using dynamic API
+playlist = request.dynamic(fetch_next_track)
+
+stream = add([music, live, playlist])
+
+# Output
 output.icecast(
   %mp3,
-  host = "icecast",
-  port = 1990,
-  password = "source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
-  mount = "/stream",
-  radio
+  stream,
+  host="127.0.0.1",
+  port=1990,
+  password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
+  mount="/stream",
 )
-
-# Enable HTTP and Telnet APIs
-server.telnet(port=1234, password="mysecret")
-server.http(port=80)
