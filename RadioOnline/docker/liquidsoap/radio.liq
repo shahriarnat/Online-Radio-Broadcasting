@@ -3,7 +3,7 @@
 settings.init.allow_root := true
 settings.log.level := 1
 
-settings.server.telnet := false
+settings.server.telnet := true
 settings.server.telnet.port := 1234
 
 settings.crossfade.assume_autocue := true
