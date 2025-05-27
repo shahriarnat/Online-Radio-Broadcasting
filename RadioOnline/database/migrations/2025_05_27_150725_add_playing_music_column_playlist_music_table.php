@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('playlist_music', function (Blueprint $table) {
-            $table->boolean('playing')->default(0)->after('position')->comment('Indicates if the music is currently playing');
+            $table->enum('play_status', ['pending', 'playing', 'played'])->default('pending')->after('position')->comment('Indicates if the music is currently playing');
         });
     }
 
