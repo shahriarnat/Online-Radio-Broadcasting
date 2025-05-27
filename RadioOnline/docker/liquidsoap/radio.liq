@@ -1,7 +1,7 @@
 #!/usr/bin/liquidsoap
 
 settings.init.allow_root := true
-settings.log.level := 1
+settings.log.level := 4
 
 settings.server.telnet := true
 settings.server.telnet.port := 1234
@@ -13,13 +13,13 @@ settings.autocue.preferred := "internal"
 settings.init.force_start := true
 
 # Inputs
-music = mksafe(input.http("http://127.0.0.1:1990/music.mp3"))
-live  = mksafe(input.http("http://127.0.0.1:1990/live.mp3"))
-#playlist = mksafe(playlist("https://dash.livemst.com/track.pls"))
+music = mksafe(input.http("http://icecast:1990/music.mp3"))
+live  = mksafe(input.http("http://icecast:1990/live.mp3"))
+#playlist = mksafe(playlist("http://backend:8000/track.pls"))
 
 # Function to get the next track URL from your API
 def fetch_next_track()
-  url = get_process_output("curl -s https://dash.livemst.com/track.pls")
+  url = get_process_output("curl -s http://backend:8000/track.pls")
   log("Next track URL: #{url}")
   request.create(url)
 end
@@ -33,7 +33,7 @@ stream = add([music, live, playlist])
 output.icecast(
   %mp3,
   stream,
-  host="127.0.0.1",
+  host="icecast",
   port=1990,
   password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
   mount="/stream",
