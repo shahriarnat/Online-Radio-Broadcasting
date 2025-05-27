@@ -10,6 +10,6 @@ Route::get('/', function () {
 
 Route::get('/track.pls', function () {
     $randomMusic = Music::inRandomOrder()->first();
-    return asset(Storage::url($randomMusic->music));
+    return asset(Storage::url($randomMusic->music), false);
 });
 
