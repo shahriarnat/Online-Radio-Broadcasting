@@ -74,7 +74,7 @@
     <div id="metadata" style="color:#9b9b9b;text-shadow: 0px 0px 20px #ddd;">Loading metadata...</div>
 </div>
 <script>
-    const channel_name = "music.mp3";
+    const channel_name = "stream";
     const audio = document.getElementById("audio");
     const metadataDiv = document.getElementById("metadata");
     const canvas = document.getElementById("waveform");
