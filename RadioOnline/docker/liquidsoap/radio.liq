@@ -1,7 +1,7 @@
 #!/usr/bin/liquidsoap
 
 settings.init.allow_root := true
-settings.log.level := 4
+settings.log.level := 2
 
 settings.server.telnet := true
 settings.server.telnet.port := 1234
@@ -19,7 +19,7 @@ live  = mksafe(input.http("http://icecast:1990/live.mp3"))
 
 # Function to get the next track URL from your API
 def fetch_next_track()
-  url = get_process_output("curl -s http://backend:8000/track.pls")
+  url = process.read("curl -s http://backend:8000/track.pls")
   log("Next track URL: #{url}")
   request.create(url)
 end
