@@ -79,6 +79,7 @@ class MusicController extends Controller
 
             return ApiResponse::success($data, __('music.created'), 201);
         } catch (\Exception $e) {
+            dd($e);
             return ApiResponse::error($e->getMessage());
         }
     }
