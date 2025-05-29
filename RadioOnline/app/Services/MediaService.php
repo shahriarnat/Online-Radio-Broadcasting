@@ -35,22 +35,28 @@ class MediaService implements MediaServiceInterface
 
     public function getDuration()
     {
-        return (int) $this->resource['playtime_seconds'] ?? null;
+        return isset($this->resource['playtime_seconds']) ? intval($this->resource['playtime_seconds']) : null;
     }
 
     public function getTitle()
     {
-        return $this->resource['id3v1']['title'] ?? null;
+        return isset($this->resource['id3v1']['title'])
+            ? mb_convert_encoding($this->resource['id3v1']['title'], 'UTF-8', 'UTF-8')
+            : null;
     }
 
     public function getArtist()
     {
-        return $this->resource['id3v1']['artist'] ?? null;
+        return isset($this->resource['id3v1']['artist'])
+            ? mb_convert_encoding($this->resource['id3v1']['artist'], 'UTF-8', 'UTF-8')
+            : null;
     }
 
     public function getAlbum()
     {
-        return $this->resource['id3v1']['album'] ?? null;
+        return isset($this->resource['id3v1']['album'])
+            ? mb_convert_encoding($this->resource['id3v1']['album'], 'UTF-8', 'UTF-8')
+            : null;
     }
 
     public function getCoverBase64()
@@ -67,13 +73,20 @@ class MediaService implements MediaServiceInterface
 
     public function getCoverBinary()
     {
-        if (empty($this->resource['comments']['picture'][0]))
-            return null;
-
-        return [
-            'data' => $this->resource['comments']['picture'][0]['data'],
-            'mime' => $this->resource['comments']['picture'][0]['image_mime'],
-            'image_ext' => $this->mimes[$this->resource['comments']['picture'][0]['image_mime']] ?? null,
-        ];
+        if (!empty($this->resource['id3v2']['comments']['picture'][0])) {
+            return [
+                'data' => $this->resource['id3v2']['comments']['picture'][0]['data'],
+                'mime' => $this->resource['id3v2']['comments']['picture'][0]['image_mime'],
+                'image_ext' => $this->mimes[$this->resource['id3v2']['comments']['picture'][0]['image_mime']] ?? null,
+            ];
+        }
+        if (!empty($this->resource['id3v2']['APIC'][0]['data'])) {
+            return [
+                'data' => $this->resource['id3v2']['APIC'][0]['data'],
+                'mime' => $this->resource['id3v2']['APIC'][0]['image_mime'],
+                'image_ext' => $this->mimes[$this->resource['id3v2']['APIC'][0]['image_mime']] ?? null,
+            ];
+        }
+        return null;
     }
 }

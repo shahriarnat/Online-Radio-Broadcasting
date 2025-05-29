@@ -52,15 +52,25 @@ class MusicController extends Controller
         }
     }
 
+    /**
+     * Store a new music record.
+     *
+     * Relations:
+     * - `playlists`: Retrieves associated playlists for the music.
+     * - `genre`: Retrieves the genre associated with the music.
+     */
     public function store(StoreMusicRequest $request): JsonResponse
     {
         try {
-            $music = $request->file('music')->store('musics', 'public');
+            $music = $request->file('music');
+            $musicPath = Str::random(64) . '.' . $music->getClientOriginalExtension();
+            $music = $music->storeAs('musics', $musicPath, 'public');
+
             $metadata = $this->mediaService->analyzeFile(public_path(Storage::url($music)));
 
             $cover = $metadata->getCoverBinary();
             if ($cover) {
-                $coverPath = 'covers/' . Str::random(32) . '.' . $cover['image_ext'];
+                $coverPath = 'covers/' . Str::random(64) . '.' . $cover['image_ext'];
                 Storage::disk('public')->put($coverPath, $cover['data']);
                 $cover = $coverPath;
             }
@@ -79,7 +89,6 @@ class MusicController extends Controller
 
             return ApiResponse::success($data, __('music.created'), 201);
         } catch (\Exception $e) {
-            dd($e);
             return ApiResponse::error($e->getMessage());
         }
     }

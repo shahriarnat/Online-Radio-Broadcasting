@@ -8,6 +8,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::call(function () {
-    $this->command('sanctum:prune-expired')->everyMinute();
-})->everyMinute();
+Schedule::command('sanctum:prune-expired')->everyMinute();
+Schedule::command('session:prune')->everyMinute();
