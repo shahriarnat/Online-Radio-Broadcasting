@@ -2,6 +2,8 @@
 
 namespace app\Helpers;
 
+use App\Http\Resources\PaginationResource;
+
 class ApiResponse
 {
     public static function success($data = null, $message = 'Success', $code = 200)
@@ -30,6 +32,17 @@ class ApiResponse
             'status' => 'validation',
             'code' => $code,
             'errors' => $errors,
+        ], $code);
+    }
+
+    public static function paginate($data, $message = 'Success', $code = 200)
+    {
+        return response()->json([
+            'message' => $message,
+            'status' => 'success',
+            'code' => $code,
+            'paginate' => PaginationResource::make($data),
+            'data' => $data->items(),
         ], $code);
     }
 

@@ -19,13 +19,22 @@ class PlaylistController extends Controller
         $playlists = Playlist::all();
         collect($playlists)->each(function ($playlist) {
             $playlist->musics = $playlist->musics()->count();
+            $playlist->channel = $playlist->channel()->first()->only(['id', 'name', 'slug']);
         });
         return ApiResponse::success($playlists);
     }
 
     public function show(ShowPlaylistRequest $id): JsonResponse
     {
-        $playlist = Playlist::with('musics')->find($id->id);
+        $playlist = Playlist::with([
+            'channel' => function ($channel) {
+                $channel->select(['id', 'name', 'slug']);
+            },
+            'musics' => function ($musics) {
+                $musics->select(['id', 'title', 'artist', 'duration', 'cover', 'guest_like', 'position'])
+                    ->orderBy('position', 'asc');
+            }
+        ])->find($id->id);
         return ApiResponse::success($playlist);
     }
 

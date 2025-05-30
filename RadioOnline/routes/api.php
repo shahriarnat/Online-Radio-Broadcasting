@@ -4,12 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\GeneralController;
 
+Route::prefix('general')->group(function () {
+    Route::get('info', [GeneralController::class, 'info'])->name('general.info');
+});
+
+/*
+ * Routes for authentication, including login and logout functionality.
+ * The logout route is protected by the 'auth:sanctum' middleware.
+ */
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
 });
-
 /*
  * The following section defines routes for the 'playlist' resource, which are protected by the 'auth:sanctum' middleware.
  * These routes allow authenticated users to perform CRUD operations on playlists, such as retrieving all playlists,
@@ -32,6 +40,7 @@ Route::prefix('playlist')->middleware('auth:sanctum')->group(function () {
  * Additionally, it includes a route to retrieve all available genres associated with music records.
  */
 Route::prefix('music')->middleware('auth:sanctum')->group(function () {
+    Route::get('properties', [MusicController::class, 'properties'])->name('music.properties');
     Route::get('all', [MusicController::class, 'index'])->name('music.all');
     Route::get('show/{id}', [MusicController::class, 'show'])->name('music.show');
     Route::post('store', [MusicController::class, 'store'])->name('music.store');
@@ -39,4 +48,3 @@ Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('genre.all');
 });
-

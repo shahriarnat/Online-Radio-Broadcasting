@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use app\Helpers\ApiResponse;
 use App\Http\Requests\DestroyMusicRequest;
 use App\Http\Requests\ShowMusicRequest;
+use App\Http\Requests\ShowMusicsRequest;
 use App\Http\Requests\StoreMusicRequest;
 use App\Http\Requests\UpdateMusicRequest;
+use App\Http\Resources\PaginationResource;
 use App\Models\Genre;
 use App\Models\Music;
+use App\Models\Playlist;
 use App\Services\Interfaces\MediaServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -24,15 +26,36 @@ class MusicController extends Controller
         $this->mediaService = $mediaService;
     }
 
-    public function index(): JsonResponse
+    public function properties(): JsonResponse
+    {
+        return ApiResponse::success([
+            'playlists' => Playlist::all()->map(function ($playlist) {
+                return ['id' => $playlist->id, 'name' => $playlist->name];
+            }),
+            'genres' => Genre::all()->map(function ($genre) {
+                return ['id' => $genre->id, 'name' => $genre->name];
+            }),
+            'artists' => Music::distinct()->pluck('artist')->filter()->values(),
+        ], 'Extracted properties of the Music filters');
+    }
+
+    public function index(ShowMusicsRequest $request): JsonResponse
     {
         // Retrieve all music records
-        $musics = Music::all();
-        collect($musics)->each(function ($music) {
-            $music->playlists = $music->playlists()->get(['name']);
-            $music->genre = $music->genre()->first(['id', 'name']);
-        });
-        return ApiResponse::success($musics);
+        $musics = Music::query()
+            ->select(['id', 'genre_id', 'title', 'artist', 'cover', 'music', 'duration', 'is_ads', 'guest_like'])
+            ->Filtering($request)
+            ->with([
+                'playlists' => function ($query) {
+                    $query->select('id', 'name');
+                },
+                'genre' => function ($query) {
+                    $query->select('id', 'name');
+                }])
+            ->Sorting($request->sort_by, $request->sort_order)
+            ->Paginating($request->per_page, $request->page);
+
+        return ApiResponse::paginate($musics);
     }
 
     public function show(ShowMusicRequest $id): JsonResponse
