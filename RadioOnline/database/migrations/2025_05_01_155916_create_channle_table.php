@@ -10,14 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('playlists', function (Blueprint $table) {
+        Schema::create('channels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('channel_playlist')->constrained('channels')->onDelete('restrict');
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('start_play', 5);
-            $table->string('end_play', 5);
-            $table->boolean('activate')->default(true);
+            $table->string('slug')->unique();
+            $table->string('description')->nullable();
+            $table->string('stream_address')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('playlists');
+        Schema::dropIfExists('channels');
     }
 };

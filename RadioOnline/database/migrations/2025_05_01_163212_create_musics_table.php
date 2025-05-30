@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('genre_id')->nullable()->comment('Genre name');
             $table->foreign('genre_id')->references('id')->on('genres')->onDelete('restrict');
 
-            $table->integer('quest_like')->comment('Number of likes from guest users')->default(0);
+            $table->integer('guest_like')->comment('Number of likes from guest users')->default(0);
             $table->boolean('is_ads')->default(0);
             $table->timestamps();
         });
