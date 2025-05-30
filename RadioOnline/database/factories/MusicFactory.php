@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Genre;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Music>
@@ -19,13 +18,14 @@ class MusicFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(3),
-            'artist' => $this->faker->name(),
-            'album' => $this->faker->word(),
-            'cover' => $this->faker->imageUrl(200, 200, 'music'),
-            'file' => $this->faker->filePath('musics', 'mp3'),
-            'duration' => $this->faker->numberBetween(1, 300),
-            'genre_id' => Genre::factory(),
-            'is_ads' => $this->faker->boolean(),
+            'artist' => $this->faker->name,
+            'album' => $this->faker->word,
+            'cover' => 'covers/' . $this->faker->md5() . '.jpg',
+            'music' => 'musics/' . $this->faker->md5() . '.mp3',
+            'duration' => $this->faker->numberBetween(120, 360), // duration in seconds
+            'genre_id' => $this->faker->numberBetween(1, 10),
+            'guest_like' => $this->faker->numberBetween(0, 9999),
+            'is_ads' => $this->faker->boolean(10),
         ];
     }
 }
