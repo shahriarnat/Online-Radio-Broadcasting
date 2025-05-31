@@ -22,7 +22,7 @@ english  = mksafe(input.http("https://dl7.irlanguage.com/ESLPodcast-0001-0050/Da
 
 # Function to get the next track URL from your API
 def fetch_next_track()
-  url = process.read("curl -s http://backend:8000/track.pls")
+url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls")
   log("Next track URL: #{url}")
   request.create(url)
 end
