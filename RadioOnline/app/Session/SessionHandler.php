@@ -10,7 +10,7 @@ class SessionHandler extends DatabaseSessionHandler
     public function write($sessionId, $data): bool
     {
         $userAgent = Request::header('User-Agent');
-
+dd($userAgent);
         $skipUserAgent = [
             'Googlebot',
             'Bingbot',
@@ -22,7 +22,8 @@ class SessionHandler extends DatabaseSessionHandler
             'Exabot',
             'Facebot',
             'ia_archiver',
-            'RadioLiquidSoap/1.0'
+            'RadioLiquidSoap/1.0',
+            'Mozilla'
         ];
 
         foreach ($skipUserAgent as $bot) {

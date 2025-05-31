@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\VisitorsMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Music;

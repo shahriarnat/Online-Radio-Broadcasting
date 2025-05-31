@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\VisitorsMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BroadcasterController;
 use App\Http\Controllers\AuthController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\MusicController;
 use App\Http\Controllers\GeneralController;
 
 Route::prefix('general')->group(function () {
-    Route::get('info', [GeneralController::class, 'info'])->name('general.info');
+    Route::get('info', [GeneralController::class, 'info'])->name('general.info')->middleware(VisitorsMiddleware::class);
 });
 
 /*
