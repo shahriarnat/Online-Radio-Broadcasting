@@ -20,12 +20,16 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         /* Extend the session service to use a custom SessionHandler implementation */
-        $this->app->extend('session', function ($service, $app) {
+        $this->app->singleton('session.handler', function ($app) {
             $connection = DB::connection(config('session.connection'));
-            $table = config('session.table', 'sessions');
+            $table = config('session.table');
             $lifetime = config('session.lifetime');
 
             return new SessionHandler($connection, $table, $lifetime, $app);
+        });
+
+        $this->app->extend('session', function ($service, $app) {
+            return new SessionManager($app);
         });
 
         $this->app->bind(MediaServiceInterface::class, MediaService::class);
