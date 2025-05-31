@@ -12,12 +12,17 @@ return new class extends Migration {
     {
         Schema::create('playlists', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('channel_playlist')->constrained('channels')->onDelete('restrict');
-            $table->string('name');
+
+            $table->string('name', 255);
             $table->text('description')->nullable();
-            $table->string('start_play', 5);
-            $table->string('end_play', 5);
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->boolean('activate')->default(true);
+
             $table->timestamps();
         });
     }

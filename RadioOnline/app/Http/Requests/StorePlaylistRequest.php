@@ -22,10 +22,13 @@ class StorePlaylistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:playlists,name|max:255',
+            'channel_playlist' => 'required|exists:channels,id',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'start_play' => 'required|date_format:H:i',
-            'end_play' => 'required|date_format:H:i|after_or_equal:start_play',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
             'activate' => 'required|boolean',
         ];
     }
