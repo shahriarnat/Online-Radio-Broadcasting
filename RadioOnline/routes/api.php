@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BroadcasterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\MusicController;
@@ -47,4 +48,13 @@ Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::post('update/{id}', [MusicController::class, 'update'])->name('music.update');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('genre.all');
+});
+
+/*
+* The following section defines routes for the 'broadcaster' resource, which are protected by the 'auth:sanctum' middleware.
+* These routes allow authenticated users to retrieve listener information for a specific channel and fetch overall broadcaster statistics.
+*/
+Route::prefix('broadcaster')->middleware('auth:sanctum')->group(function () {
+    Route::get('listener', [BroadcasterController::class, 'listener'])->name('broadcaster.listener');
+    Route::get('stats', [BroadcasterController::class, 'stats'])->name('broadcaster.stats');
 });

@@ -46,6 +46,7 @@ services:
         restart: always
         ports:
             - '1990:1990'
+            - '127.0.0.1:1890:1990'
         networks:
             - app_network
         volumes:

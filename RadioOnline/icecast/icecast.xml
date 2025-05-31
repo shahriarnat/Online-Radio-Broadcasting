@@ -176,10 +176,11 @@
         <on-disconnect>/home/icecast/bin/stream-stop</on-disconnect>
     </mount>
     -->
-
+    <!--
     <mount>
         <mount-name>/live.mp3</mount-name>
     </mount>
+    -->
 
     <!--    <mount type="normal">-->
     <!--        <mount-name>/music.mp3</mount-name>-->
@@ -243,7 +244,8 @@
              this example will redirect all requests for http://server:port/ to
              the status page
         -->
-        <alias source="/spradm" destination="/"/>
+        <alias source="/superscript" destination="/status.xsl"/>
+        <alias source="/superscript/admin" destination="/admin"/>
 
         <!-- The certificate file needs to contain both public and private part.
              Both should be PEM encoded.
@@ -255,8 +257,8 @@
         <accesslog>access.log</accesslog>
         <errorlog>error.log</errorlog>
         <!-- <playlistlog>playlist.log</playlistlog> -->
-        <loglevel>3</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
-        <logsize>10000</logsize> <!-- Max size of a logfile -->
+        <loglevel>1</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+        <logsize>1000</logsize> <!-- Max size of a logfile -->
         <!-- If logarchive is enabled (1), then when logsize is reached
              the logfile will be moved to [error|access|playlist].log.DATESTAMP,
              otherwise it will be moved to [error|access|playlist].log.old.

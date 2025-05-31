@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\IcecastService;
+use App\Services\Interfaces\IcecastInterface;
 use App\Services\Interfaces\MediaServiceInterface;
 use App\Services\MediaService;
 use Illuminate\Support\Facades\URL;
@@ -15,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(MediaServiceInterface::class, MediaService::class);
+        $this->app->bind(IcecastInterface::class, IcecastService::class);
     }
 
     /**

@@ -16,7 +16,8 @@
         "laravel/octane": "^2.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
-        "spatie/laravel-permission": "^6.17"
+        "spatie/laravel-permission": "^6.17",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
