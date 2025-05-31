@@ -47,7 +47,7 @@ class IcecastService implements IcecastInterface
     {
         $response = Http::withBasicAuth($this->username, $this->password)
             ->get("{$this->host}{$this->alias}/listclients", [
-                'mount' => $mount
+                'mount' => '/' . $mount
             ]);
 
         if ($response->successful()) {
