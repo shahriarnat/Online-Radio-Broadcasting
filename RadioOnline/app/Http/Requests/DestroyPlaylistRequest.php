@@ -22,7 +22,7 @@ class DestroyPlaylistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:playlists,id',
+            'id' => 'required|integer|exists:playlists,id,playlist_type,music',
         ];
     }
 

@@ -1,16 +1,10 @@
 <?php
 
-use App\Http\Middleware\VisitorsMiddleware;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Music;
+use App\Http\Controllers\PlayController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/track.pls', function () {
-    $randomMusic = Music::inRandomOrder()->first();
-    return asset(Storage::url($randomMusic->music), false);
-});
-
+Route::get('/track.pls', [PlayController::class, 'play'])->name('play');

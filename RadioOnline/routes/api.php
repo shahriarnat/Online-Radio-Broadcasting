@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LiveController;
 use App\Http\Middleware\VisitorsMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BroadcasterController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\GeneralController;
 
 Route::prefix('general')->group(function () {
     Route::get('info', [GeneralController::class, 'info'])->name('general.info')->middleware(VisitorsMiddleware::class);
+    Route::post('like', [MusicController::class, 'like'])->name('general.like');
 });
 
 /*
@@ -47,8 +49,19 @@ Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::get('show/{id}', [MusicController::class, 'show'])->name('music.show');
     Route::post('store', [MusicController::class, 'store'])->name('music.store');
     Route::post('update/{id}', [MusicController::class, 'update'])->name('music.update');
+    Route::put('assign', [MusicController::class, 'assign'])->name('music.assignMusicPlaylist');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('genre.all');
+});
+
+/*
+ * The following section defines routes for the 'live' resource, which are protected by the 'auth:sanctum' middleware.
+ * These routes allow authenticated users to retrieve all live sessions, create a new live session, and delete an existing live session.
+ */
+Route::prefix('live')->middleware('auth:sanctum')->group(function () {
+    Route::get('all', [LiveController::class, 'index'])->name('live.all');
+    Route::post('store', [LiveController::class, 'store'])->name('live.store');
+    Route::delete('delete/{id}', [LiveController::class, 'destroy'])->name('live.delete');
 });
 
 /*
