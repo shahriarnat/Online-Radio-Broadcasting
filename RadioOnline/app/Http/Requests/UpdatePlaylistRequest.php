@@ -23,7 +23,8 @@ class UpdatePlaylistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:playlists,id',
+            'id' => 'required|integer|exists:playlists,id,playlist_type,music',
+            'channel_playlist' => 'required|exists:channels,id',
             'name' => [
                 'required',
                 'string',
@@ -31,8 +32,10 @@ class UpdatePlaylistRequest extends FormRequest
                 Rule::unique('playlists', 'name')->whereNotIn('id', [$this->id]),
             ],
             'description' => 'nullable|string|max:1000',
-            'start_play' => 'required|date_format:H:i',
-            'end_play' => 'required|date_format:H:i|after_or_equal:start_play',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
             'activate' => 'required|boolean',
         ];
     }

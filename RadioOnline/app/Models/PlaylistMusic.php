@@ -23,4 +23,9 @@ class PlaylistMusic extends Model
         return $this->belongsTo(Music::class);
     }
 
+    public function channel(): BelongsTo
+    {
+        return $this->belongsTo(Channel::class);
+    }
+
 }
