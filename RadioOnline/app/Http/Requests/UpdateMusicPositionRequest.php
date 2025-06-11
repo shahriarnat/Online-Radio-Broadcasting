@@ -22,9 +22,10 @@ class UpdateMusicPositionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'music_id' => 'required|integer|exists:playlist_music,music_id',
+            'musics' => 'required|array',
+            'musics.*.music_id' => 'required|integer|exists:playlist_music,music_id',
+            'musics.*.position' => 'required|integer|min:1',
             'playlist_id' => 'required|integer|exists:playlist_music,playlist_id',
-            'position' => 'required|integer|min:1',
         ];
     }
 }

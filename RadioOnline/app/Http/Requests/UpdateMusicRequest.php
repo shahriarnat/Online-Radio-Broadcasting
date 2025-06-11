@@ -30,10 +30,7 @@ class UpdateMusicRequest extends FormRequest
             'album' => 'nullable|string|max:255',
             'cover' => 'nullable|image|mimes:jpg,png,gif|max:512',
             'genre_id' => 'required|exists:genres,id',
-            'playlists' => ['required', Rule::exists('playlists', 'id')->where(function ($query) {
-                $query->whereIn('id', Str::of($this->playlists)->explode(','));
-            })],
-            'is_ads' => 'nullable|boolean',
+            'is_ads' => 'required|boolean',
         ];
     }
 

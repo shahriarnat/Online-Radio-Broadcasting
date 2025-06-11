@@ -3,17 +3,24 @@
 namespace App\Http\Controllers;
 
 use app\Helpers\ApiResponse;
+use App\Http\Requests\AssignMusicPlaylistRequest;
 use App\Http\Requests\DestroyMusicRequest;
 use App\Http\Requests\ShowMusicRequest;
 use App\Http\Requests\ShowMusicsRequest;
 use App\Http\Requests\StoreMusicRequest;
 use App\Http\Requests\UpdateMusicRequest;
+use App\Http\Resources\AllMusicsResponse;
 use App\Http\Resources\PaginationResource;
+use App\Http\Resources\ShowMusicResponse;
 use App\Models\Genre;
 use App\Models\Music;
 use App\Models\Playlist;
+use App\Models\PlaylistMusic;
 use App\Services\Interfaces\MediaServiceInterface;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -55,7 +62,7 @@ class MusicController extends Controller
             ->Sorting($request->sort_by, $request->sort_order)
             ->Paginating($request->per_page, $request->page);
 
-        return ApiResponse::paginate($musics);
+        return ApiResponse::paginate(AllMusicsResponse::collection($musics));
     }
 
     public function show(ShowMusicRequest $id): JsonResponse
@@ -69,7 +76,7 @@ class MusicController extends Controller
             $music->music = asset(Storage::url($music->music));
             $music->cover = asset(Storage::url($music->cover));
 
-            return ApiResponse::success($music, __('music.show'));
+            return ApiResponse::success(ShowMusicResponse::make($music), __('music.show'));
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
@@ -133,9 +140,6 @@ class MusicController extends Controller
 
             $music->save();
 
-            $music->playlists()->sync(Str::of($request->input('playlists'))->explode(','));
-            $music->playlists = $music->playlists()->get(['name']);
-
             $music->genre_id = $music->genre()->first(['id', 'name']);
 
             $music->music = asset(Storage::url($music->music));
@@ -163,6 +167,47 @@ class MusicController extends Controller
         $music->delete();
 
         return ApiResponse::success(null, __('music.deleted'));
+    }
+
+    public function assign(AssignMusicPlaylistRequest $request)
+    {
+        try {
+            $items = $request->all();
+            $playlist = Playlist::findOrFail($items['playlist_id']);
+            $playlist->musics()->sync(collect($items['musics'])->pluck('music_id')->toArray());
+            return ApiResponse::success($items, __('music.assigned'));
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+
+    }
+
+    public function like()
+    {
+        // Toggle like status for a music record
+        try {
+            /*
+             * Calculate the delay in seconds for a 12-hour period from the current time.
+             * This is used to determine the time difference between now and 12 hours later.
+            */
+            $delay = (int)Carbon::now()->addHour(12)->diffInSeconds(Carbon::now(), true);
+
+            // Check if the user has exceeded the rate limit for liking a music record
+            $trigger = RateLimiter::attempt(
+                'music_like:' . request('music_id') . '-' . request()->getClientIp(), 1, function () {
+            }, $delay); // 1 request per half a day
+
+            if ($trigger) {
+                $music = Music::findOrFail(request('music_id'));
+                $music->guest_like = ++$music->guest_like;
+                $music->save();
+                // Return success response with the updated like status
+                return ApiResponse::success(['music_id' => $music->id, 'like' => $music->guest_like], __('music.like_success'));
+            }
+            return ApiResponse::error(__('music.like_duplicate'), Response::HTTP_TOO_MANY_REQUESTS);
+        } catch (\Exception $e) {
+            return ApiResponse::error(__('music.like_error'));
+        }
     }
 
     public function genres(): JsonResponse
