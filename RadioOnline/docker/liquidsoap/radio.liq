@@ -15,23 +15,23 @@ settings.init.force_start := true
 # Inputs
 #music = mksafe(input.http("http://icecast:1990/music.mp3"))
 #playlist = mksafe(playlist("http://backend:8000/track.pls"))
+#ch1 = mksafe(input.http("http://backend:8000/track.pls?channel_id=1"))
 
-music = mksafe(input.http("https://n05.radiojar.com/cp13r2cpn3quv?rj-ttl=5&rj-tok=AAABlyN2P8UAZhFQuQmWGHCCvQ"))
+ch2  = mksafe(input.http("http://backend:8000/track.pls?channel_id=2"))
 live  = mksafe(input.http("http://icecast:1990/live"))
-english  = mksafe(input.http("https://dl7.irlanguage.com/ESLPodcast-0001-0050/Daily%20English%200001-Introducing%20Yourself.mp3"))
 
 # Function to get the next track URL from your API
 def fetch_next_track()
-url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls")
+url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=1")
   log("Next track URL: #{url}")
   request.create(url)
 end
 
 # Request source using dynamic API
-playlist = request.dynamic(fetch_next_track)
+ch1 = request.dynamic(fetch_next_track)
 
-stream1 = amplify(2.5, add([music, live, playlist]))
-stream2 = amplify(2.5, english)
+stream1 = amplify(1.5, add([live, ch1]))
+stream2 = amplify(1.5, ch2)
 
 # Output Stream 1
 output.icecast(
