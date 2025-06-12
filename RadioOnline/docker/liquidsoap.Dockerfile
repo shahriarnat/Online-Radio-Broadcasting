@@ -6,7 +6,8 @@ USER root
 # Ensure apt works and install curl
 RUN mkdir -p /var/lib/apt/lists/partial && \
     apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y vim curl cron && \
+    echo "* * * * * find /tmp -name 'liq-*' -mmin +1440 -delete" | crontab - && \
     rm -rf /var/lib/apt/lists/*
 
 # Switch back to liquidsoap user
