@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use app\Helpers\ApiResponse;
 use App\Models\PlaylistMusic;
+use http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PlayController extends Controller
 {
@@ -36,7 +39,8 @@ class PlayController extends Controller
                 ->where('play_status', 'played')
                 ->update(['play_status' => 'pending', 'updated_at' => now()]);
         } else {
-            echo asset($currentMusic->music->music, false);
+            echo asset(Storage::url($currentMusic->music->music), false);
+            ob_end_flush();
             $music->update(['play_status' => 'playing', 'updated_at' => now()]);
         }
 
