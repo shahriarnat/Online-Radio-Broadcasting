@@ -7,8 +7,10 @@ USER root
 RUN mkdir -p /var/lib/apt/lists/partial && \
     apt-get update && \
     apt-get install -y vim curl cron && \
-    echo "* * * * * find /tmp -name 'liq-*' -mmin +1440 -delete" | crontab - && \
     rm -rf /var/lib/apt/lists/*
+
+# Create a cron job
+RUN echo "* * * * * find /tmp -name 'liq-*' -mmin +1440 -delete" > /etc/cron.d/liquidsoap.cron
 
 # Switch back to liquidsoap user
 USER liquidsoap
