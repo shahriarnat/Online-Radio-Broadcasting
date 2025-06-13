@@ -39,7 +39,9 @@ class PlayController extends Controller
                 ->where('play_status', 'played')
                 ->update(['play_status' => 'pending', 'updated_at' => now()]);
         } else {
+            ob_start();
             echo asset(Storage::url($currentMusic->music->music), false);
+            ob_flush();
             ob_end_flush();
             $music->update(['play_status' => 'playing', 'updated_at' => now()]);
         }
