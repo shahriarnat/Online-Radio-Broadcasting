@@ -47,7 +47,7 @@ Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::get('properties', [MusicController::class, 'properties'])->name('music.properties');
     Route::get('all', [MusicController::class, 'index'])->name('music.all');
     Route::get('show/{id}', [MusicController::class, 'show'])->name('music.show');
-    Route::post('store', [MusicController::class, 'store'])->withoutOctane()->name('music.store');
+    Route::post('store', [MusicController::class, 'store'])->name('music.store');
     Route::post('update/{id}', [MusicController::class, 'update'])->name('music.update');
     Route::put('assign', [MusicController::class, 'assign'])->name('music.assignMusicPlaylist');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
