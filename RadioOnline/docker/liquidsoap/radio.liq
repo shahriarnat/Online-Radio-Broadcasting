@@ -27,8 +27,8 @@ url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.p
 end
 
 # Request source using dynamic API
-ch1 = request.dynamic(fetch_playlist_channel, 1)
-ch2 = request.dynamic(fetch_playlist_channel, 2)
+ch1 = request.dynamic(fetch_playlist_channel, channel_id=1)
+ch2 = request.dynamic(fetch_playlist_channel, channel_id=2)
 
 stream1 = amplify(1.5, add([live, ch1]))
 stream2 = amplify(1.5, ch2)
