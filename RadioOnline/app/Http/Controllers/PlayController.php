@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use app\Helpers\ApiResponse;
+use App\Models\Playlist;
 use App\Models\PlaylistMusic;
-use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,36 +11,94 @@ class PlayController extends Controller
 {
     public function play(Request $request): void
     {
-        $previous = PlaylistMusic::query()
-            ->with('music')
-            ->whereHas('playlist.channel', function ($query) use ($request) {
-                $query->where('id', $request->input('channel_id'));
-            })
-            ->where('play_status', 'playing')
-            ->orderBy('position', 'asc');
-        $previous->update(['play_status' => 'played', 'updated_at' => now()]);
 
-        $music = PlaylistMusic::query()
-            ->with('music')
-            ->whereHas('playlist.channel', function ($query) use ($request) {
-                $query->where('id', $request->input('channel_id'));
-            })
-            ->where('play_status', 'pending')
-            ->orderBy('position', 'asc');
+        $playlist = Playlist::query()
+            ->where('channel_playlist', $request->input('channel_id'))
+            ->where('start_date', '<=', now()->toDateString())
+            ->where('end_date', '>=', now()->toDateString())
+            ->where('start_time', '<=', now()->toTimeString())
+            ->where('end_time', '>=', now()->toTimeString())
+            ->where('activate', 1);
 
-        $currentMusic = $music->first();
+        $playlist = $playlist->first();
 
-        if ($currentMusic === null) {
-            PlaylistMusic::query()
-                ->whereHas('playlist.channel', function ($query) use ($request) {
-                    $query->where('id', $request->input('channel_id'));
-                })
-                ->where('play_status', 'played')
-                ->update(['play_status' => 'pending', 'updated_at' => now()]);
-        } else {
-            $music->update(['play_status' => 'playing', 'updated_at' => now()]);
-            die(asset(Storage::url($currentMusic->music->music), false));
+        match ($playlist?->playlist_type) {
+            'live' => $this->handleLivePlaylist($playlist),
+            'music' => $this->handleMusicPlaylist($playlist),
+            default => $this->handleMostLikedPlaylist(),
+        };
+
+    }
+
+    private function handleLivePlaylist(Playlist $playlist): void
+    {
+        die('# live on air');
+    }
+
+    private function handleMusicPlaylist(Playlist $playlist): void
+    {
+        $currentMusic = $this->getPlaylistMusics($playlist);
+
+        if ($currentMusic) {
+            die($currentMusic);
+        }
+    }
+
+    private function handleMostLikedPlaylist(): void
+    {
+        $likePlaylist = Playlist::query()
+            ->where('playlist_type', 'liked')
+            ->where('activate', 1)
+            ->first();
+
+        if ($likePlaylist) {
+            $currentMusic = $this->getPlaylistMusics($likePlaylist);
+
+            if ($currentMusic) {
+                die($currentMusic);
+            }
         }
 
     }
+
+    /**
+     *  This block of code updates the status of the currently playing music in the playlist to "played". It performs the following steps:
+     *  1. Queries the `PlaylistMusic` model to find all records associated with the given playlist ID (`$playlist->id`) where the `play_status` is "playing".
+     *  2. Includes the related `music` data using the `with('music')` method for eager loading.
+     *  3. Orders the results by the `position` field to ensure the correct sequence.
+     *  4. Updates the `play_status` of these records to "played" and sets the `updated_at` timestamp to the current time.
+     *
+     * @param Playlist $playlist
+     * @param string $playlist_type
+     * @return string
+     */
+    private function getPlaylistMusics(Playlist $playlist): string|null
+    {
+        PlaylistMusic::query()
+            ->with('music')
+            ->where('playlist_id', $playlist->id)
+            ->where('play_status', 'playing')
+            ->orderBy('position')
+            ->update(['play_status' => 'played', 'updated_at' => now()]);
+
+        $currentMusic = PlaylistMusic::query()
+            ->with('music')
+            ->where('playlist_id', $playlist->id)
+            ->where('play_status', 'pending')
+            ->orderBy('position')
+            ->first();
+
+        if ($currentMusic) {
+            $currentMusic->where('music_id', $currentMusic->music->id)->where('playlist_id', $currentMusic->playlist_id)
+                ->update(['play_status' => 'playing', 'updated_at' => now()]);
+            return asset(Storage::url($currentMusic->music->music), false);
+        } else {
+            PlaylistMusic::query()
+                ->where('playlist_id', $playlist->id)
+                ->where('play_status', 'played')
+                ->update(['play_status' => 'pending', 'updated_at' => null]);
+        }
+        return null;
+    }
+
 }

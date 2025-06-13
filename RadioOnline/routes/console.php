@@ -11,3 +11,4 @@ Artisan::command('inspire', function () {
 Schedule::command('sanctum:prune-expired')->everyMinute();
 Schedule::command('session:prune')->everyMinute();
 Schedule::command('app:prune-expired-like-caches')->everyMinute();
+Schedule::command('app:generate-most-like-musics')->daily()->at('12:00');

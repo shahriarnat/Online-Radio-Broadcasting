@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeds::class,
             GenreSeeds::class,
             ChannelSeeder::class,
+            PlaylistDefaultSeeds::class,
         ]);
     }
 }

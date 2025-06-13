@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('playlists', function (Blueprint $table) {
-            $table->enum('playlist_type', ['live', 'podcast', 'music'])->default('music')->after('channel_playlist');
+            $table->enum('playlist_type', ['live', 'podcast', 'music', 'liked'])->default('music')->after('channel_playlist');
             $table->json('playlist_options')->nullable()->after('playlist_type');
         });
     }
