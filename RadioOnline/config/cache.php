@@ -18,6 +18,8 @@ return [
     'default' => env('CACHE_STORE', 'database'),
     'limiter' => 'database',
 
+    'radio_broadcast_channel_name' => 'broadcast_channel_',
+
 
     /*
     |--------------------------------------------------------------------------

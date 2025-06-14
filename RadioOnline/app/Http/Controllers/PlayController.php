@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Playlist;
 use App\Models\PlaylistMusic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PlayController extends Controller
@@ -32,6 +33,7 @@ class PlayController extends Controller
 
     private function handleLivePlaylist(Playlist $playlist): void
     {
+        $this->storeCachePlaylist($playlist);
         die('# live on air');
     }
 
@@ -88,6 +90,8 @@ class PlayController extends Controller
             ->orderBy('position')
             ->first();
 
+        $this->storeCachePlaylist($playlist, $currentMusic?->music);
+
         if ($currentMusic) {
             $currentMusic->where('music_id', $currentMusic->music->id)->where('playlist_id', $currentMusic->playlist_id)
                 ->update(['play_status' => 'playing', 'updated_at' => now()]);
@@ -99,6 +103,17 @@ class PlayController extends Controller
                 ->update(['play_status' => 'pending', 'updated_at' => null]);
         }
         return null;
+    }
+
+    private function storeCachePlaylist(Playlist $playlist, $music = null): void
+    {
+        $params = [
+            'channel_id' => $playlist->channel_playlist,
+            'playlist_type' => $playlist->playlist_type,
+            'playlist_id' => $playlist->id,
+            'music_id' => $music?->id,
+        ];
+        Cache::store('database')->put(config('cache.radio_broadcast_channel_name') . $playlist->channel_playlist, $params, 60 * 60 * 24);
     }
 
 }
