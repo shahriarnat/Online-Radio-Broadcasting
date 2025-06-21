@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use app\Helpers\ApiResponse;
+use App\Http\Requests\AssignBulkMusicPlaylistRequest;
 use App\Http\Requests\AssignMusicPlaylistRequest;
 use App\Http\Requests\DestroyMusicRequest;
 use App\Http\Requests\ShowMusicRequest;
@@ -176,6 +177,29 @@ class MusicController extends Controller
             $playlist = Playlist::findOrFail($items['playlist_id']);
             $playlist->musics()->sync(collect($items['musics'])->pluck('music_id')->toArray());
             return ApiResponse::success($items, __('music.assigned'));
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+
+    }
+
+    public function assignBulk(AssignBulkMusicPlaylistRequest $request)
+    {
+        try {
+            $items = $request->all();
+
+            $playlist_music_array = [];
+            foreach ($items['assign'] as $item) {
+                $playlist_music_array[$item['playlist_id']]['playlist_id'] = $item['playlist_id'];
+                $playlist_music_array[$item['playlist_id']]['musics'][] = $item['music_id'];
+            }
+
+            foreach ($playlist_music_array as $assign) {
+                $playlist = Playlist::findOrFail($assign['playlist_id']);
+                $playlist->musics()->sync(collect($assign['musics']));
+            }
+
+            return ApiResponse::success($items['assign'], __('music.assigned'));
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }

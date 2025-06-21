@@ -50,6 +50,7 @@ Route::prefix('music')->middleware('auth:sanctum')->group(function () {
     Route::post('store', [MusicController::class, 'store'])->name('music.store');
     Route::post('update/{id}', [MusicController::class, 'update'])->name('music.update');
     Route::put('assign', [MusicController::class, 'assign'])->name('music.assignMusicPlaylist');
+    Route::put('assign-bulk', [MusicController::class, 'assignBulk'])->name('music.assignBulkMusicPlaylist');
     Route::delete('delete/{id}', [MusicController::class, 'destroy'])->name('music.delete');
     Route::get('genre/all', [MusicController::class, 'genres'])->name('genre.all');
 });
