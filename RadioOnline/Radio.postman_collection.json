@@ -1468,7 +1468,7 @@
                     "response": []
                 },
                 {
-                    "name": "Assign Music to Playlist",
+                    "name": "Single - Assign Music to Playlist",
                     "protocolProfileBehavior": {
                         "disabledSystemHeaders": {
                             "accept": true
@@ -1495,7 +1495,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\r\n    \"playlist_id\": 1,\r\n    \"musics\": [\r\n        {\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"music_id\": 3\r\n        },\r\n        {\r\n            \"music_id\": 4\r\n        }\r\n        // more objects...\r\n    ]\r\n}",
+                            "raw": "{\r\n    \"playlist_id\": 1,\r\n    \"musics\": [\r\n        {\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"music_id\": 5\r\n        },\r\n        {\r\n            \"music_id\": 3\r\n        },\r\n        {\r\n            \"music_id\": 4\r\n        }\r\n        // more objects...\r\n    ]\r\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -1515,6 +1515,220 @@
                         }
                     },
                     "response": []
+                },
+                {
+                    "name": "Bulk - Assign Music to Playlist",
+                    "protocolProfileBehavior": {
+                        "disabledSystemHeaders": {
+                            "accept": true
+                        }
+                    },
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer <your_token>",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n    \"assign\": [\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 5\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 6\r\n        },\r\n        {\r\n            \"playlist_id\": 5,\r\n            \"music_id\": 7\r\n        },\r\n        {\r\n            \"playlist_id\": 4,\r\n            \"music_id\": 8\r\n        }\r\n    ]\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/music/assign-bulk",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "music",
+                                "assign-bulk"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer <your_token>",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"assign\": [\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 5\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 6\r\n        },\r\n        {\r\n            \"playlist_id\": 5,\r\n            \"music_id\": 7\r\n        },\r\n        {\r\n            \"playlist_id\": 4,\r\n            \"music_id\": 8\r\n        }\r\n    ]\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/music/assign-bulk",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "music",
+                                        "assign-bulk"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Host",
+                                    "value": "localhost:8000"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Sat, 21 Jun 2025 12:34:33 GMT"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Sat, 21 Jun 2025 12:34:33 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "close"
+                                },
+                                {
+                                    "key": "X-Powered-By",
+                                    "value": "PHP/8.2.9"
+                                },
+                                {
+                                    "key": "Cache-Control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Access-Control-Allow-Origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"موزیک با موفقیت به پلی لیست اضافه شد.\",\n    \"status\": \"success\",\n    \"code\": 200,\n    \"data\": [\n        {\n            \"playlist_id\": 1,\n            \"music_id\": 1\n        },\n        {\n            \"playlist_id\": 1,\n            \"music_id\": 2\n        },\n        {\n            \"playlist_id\": 2,\n            \"music_id\": 1\n        },\n        {\n            \"playlist_id\": 2,\n            \"music_id\": 2\n        },\n        {\n            \"playlist_id\": 3,\n            \"music_id\": 1\n        },\n        {\n            \"playlist_id\": 3,\n            \"music_id\": 5\n        },\n        {\n            \"playlist_id\": 3,\n            \"music_id\": 6\n        },\n        {\n            \"playlist_id\": 5,\n            \"music_id\": 7\n        },\n        {\n            \"playlist_id\": 4,\n            \"music_id\": 8\n        }\n    ]\n}"
+                        },
+                        {
+                            "name": "Validation",
+                            "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer <your_token>",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\r\n    \"assign\": [\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 1999\r\n        },\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 22,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 99999,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 5999\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 6\r\n        },\r\n        {\r\n            \"playlist_id\": 5,\r\n            \"music_id\": 7\r\n        },\r\n        {\r\n            \"playlist_id\": 4,\r\n            \"music_id\": 8\r\n        }\r\n    ]\r\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/api/music/assign-bulk",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "music",
+                                        "assign-bulk"
+                                    ]
+                                }
+                            },
+                            "status": "Unprocessable Content",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Host",
+                                    "value": "localhost:8000"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Sat, 21 Jun 2025 12:35:44 GMT"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Sat, 21 Jun 2025 12:35:44 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "close"
+                                },
+                                {
+                                    "key": "X-Powered-By",
+                                    "value": "PHP/8.2.9"
+                                },
+                                {
+                                    "key": "Cache-Control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Access-Control-Allow-Origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"message\": \"اطلاعات وارد شده صحیح نیست، لیست خطا ها را بررسی نمایید.\",\n    \"status\": \"validation\",\n    \"code\": 422,\n    \"errors\": {\n        \"assign.0.music_id\": [\n            \"assign.0.music_id انتخاب شده نامعتبر است.\"\n        ],\n        \"assign.5.music_id\": [\n            \"assign.5.music_id انتخاب شده نامعتبر است.\"\n        ],\n        \"assign.2.playlist_id\": [\n            \"assign.2.playlist_id انتخاب شده نامعتبر است.\"\n        ],\n        \"assign.4.playlist_id\": [\n            \"assign.4.playlist_id انتخاب شده نامعتبر است.\"\n        ]\n    }\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Delete Music",
