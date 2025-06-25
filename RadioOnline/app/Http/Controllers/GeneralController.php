@@ -64,7 +64,7 @@ class GeneralController extends Controller
                     'mode' => $playlist->playlist_type,
                     'presenter' => json_decode($playlist->playlist_options, true),
                 ];
-            } elseif (in_array($readCache['playlist_type'], ['music', 'liked']) && !$readCache['music_id']) {
+            } elseif (in_array($readCache['playlist_type'], ['music', 'liked']) && $readCache['music_id'] > 0) {
                 $music = Music::find($readCache['music_id']);
                 return [
                     'id' => $music->id,
