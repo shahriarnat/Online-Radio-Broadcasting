@@ -34,6 +34,7 @@ class PlayController extends Controller
     private function handleLivePlaylist(Playlist $playlist): void
     {
         $this->storeCachePlaylist($playlist);
+        sleep(5);
         die('# live on air');
     }
 
@@ -43,7 +44,8 @@ class PlayController extends Controller
 
         if ($currentMusic) {
             die($currentMusic);
-        }
+        } else
+            sleep(5);
     }
 
     private function handleMostLikedPlaylist(): void
@@ -58,7 +60,8 @@ class PlayController extends Controller
 
             if ($currentMusic) {
                 die($currentMusic);
-            }
+            } else
+                sleep(5);
         }
 
     }
@@ -113,7 +116,7 @@ class PlayController extends Controller
             'playlist_id' => $playlist->id,
             'music_id' => $music?->id,
         ];
-        Cache::store('database')->put(config('cache.radio_broadcast_channel_name') . (int) request()->get('channel_id'), $params, 60 * 60 * 24);
+        Cache::store('database')->put(config('cache.radio_broadcast_channel_name') . (int)request()->get('channel_id'), $params, 60 * 60 * 24);
     }
 
 }
