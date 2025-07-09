@@ -17,8 +17,7 @@ settings.init.force_start := true
 #playlist = mksafe(playlist("http://backend:8000/track.pls"))
 #ch1 = mksafe(input.http("http://backend:8000/track.pls?channel_id=1"))
 
-#live  = mksafe(input.http("http://icecast:1990/live"))
-live = skip_blank(max_blank=2., input.http("http://icecast:1990/live"))
+live  = mksafe(input.http("http://icecast:1990/live"))
 
 # Function to get the next track URL from your API
 def fetch_channel_one()
