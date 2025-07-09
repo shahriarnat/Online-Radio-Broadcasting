@@ -114,7 +114,6 @@ class PlayController extends Controller
             'music_id' => $music?->id,
         ];
         Cache::store('database')->put(config('cache.radio_broadcast_channel_name') . (int) request()->get('channel_id'), $params, 60 * 60 * 24);
-        dd($params);
     }
 
 }
