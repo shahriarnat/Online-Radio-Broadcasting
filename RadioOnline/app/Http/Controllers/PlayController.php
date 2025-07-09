@@ -22,7 +22,7 @@ class PlayController extends Controller
             ->where('activate', 1);
 
         $playlist = $playlist->first();
-dd($playlist?->playlist_type);
+
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
             'music' => $this->handleMusicPlaylist($playlist),
@@ -89,7 +89,7 @@ dd($playlist?->playlist_type);
             ->where('play_status', 'pending')
             ->orderBy('position')
             ->first();
-
+dd($currentMusic);
         $this->storeCachePlaylist($playlist, $currentMusic?->music);
 
         if ($currentMusic) {
