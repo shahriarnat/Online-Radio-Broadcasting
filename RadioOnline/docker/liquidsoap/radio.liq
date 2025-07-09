@@ -35,8 +35,7 @@ end
 
 # Request source using dynamic API
 ch1 = request.dynamic(fetch_channel_one)
-#stream1 = amplify(1.5, add([live, ch1]))
-stream1 = amplify(1.5, fallback(track_sensitive=false, [live, ch1]))
+stream1 = amplify(1.5, add([live, ch1]))
 
 ch2 = request.dynamic(fetch_channel_two)
 stream2 = amplify(1.5, add([blank(), ch2]))
