@@ -6,9 +6,9 @@ settings.log.level := 3
 settings.server.telnet := true
 settings.server.telnet.port := 1234
 
-settings.crossfade.assume_autocue := true
+#settings.crossfade.assume_autocue := true
 
-settings.autocue.preferred := "internal"
+#settings.autocue.preferred := "internal"
 
 settings.init.force_start := true
 
@@ -17,7 +17,8 @@ settings.init.force_start := true
 #playlist = mksafe(playlist("http://backend:8000/track.pls"))
 #ch1 = mksafe(input.http("http://backend:8000/track.pls?channel_id=1"))
 
-live  = mksafe(input.http("http://icecast:1990/live"))
+#live  = mksafe(input.http("http://icecast:1990/live"))
+live = skip_blank(max_blank=2., input.http("http://icecast:1990/live"))
 
 # Function to get the next track URL from your API
 def fetch_channel_one()
@@ -34,7 +35,8 @@ end
 
 # Request source using dynamic API
 ch1 = request.dynamic(fetch_channel_one)
-stream1 = amplify(1.5, add([live, ch1]))
+#stream1 = amplify(1.5, add([live, ch1]))
+stream1 = amplify(1.5, fallback(track_sensitive=false, [live, ch1]))
 
 ch2 = request.dynamic(fetch_channel_two)
 stream2 = amplify(1.5, add([blank(), ch2]))
