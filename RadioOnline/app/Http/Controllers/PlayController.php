@@ -89,7 +89,7 @@ class PlayController extends Controller
             ->where('play_status', 'pending')
             ->orderBy('position')
             ->first();
-dd($currentMusic);
+
         $this->storeCachePlaylist($playlist, $currentMusic?->music);
 
         if ($currentMusic) {
@@ -113,6 +113,7 @@ dd($currentMusic);
             'playlist_id' => $playlist->id,
             'music_id' => $music?->id,
         ];
+        dd($params);
         Cache::store('database')->put(config('cache.radio_broadcast_channel_name') . $playlist->channel_playlist, $params, 60 * 60 * 24);
     }
 
