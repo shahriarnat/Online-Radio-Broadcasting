@@ -22,7 +22,7 @@ class PlayController extends Controller
             ->where('activate', 1);
 
         $playlist = $playlist->first();
-
+dd($playlist);
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
             'music' => $this->handleMusicPlaylist($playlist),
