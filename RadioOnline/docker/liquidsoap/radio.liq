@@ -1,43 +1,47 @@
 #!/usr/bin/liquidsoap
 
+# Allow running as root
 settings.init.allow_root := true
 settings.log.level := 3
 
+# Enable telnet for debugging
 settings.server.telnet := true
 settings.server.telnet.port := 1234
 
-#settings.crossfade.assume_autocue := true
-
-#settings.autocue.preferred := "internal"
-
+# Force start Liquidsoap
 settings.init.force_start := true
 
-# Inputs
-#music = mksafe(input.http("http://icecast:1990/music.mp3"))
-#playlist = mksafe(playlist("http://backend:8000/track.pls"))
-#ch1 = mksafe(input.http("http://backend:8000/track.pls?channel_id=1"))
+# Frame size for lower latency
+set("frame.audio.size", 512)
 
-live  = mksafe(input.http("http://icecast:1990/live"))
+# Live input
+live = mksafe(input.http("http://icecast:1990/live"))
 
-# Function to get the next track URL from your API
-def fetch_channel_one()
-channel_1 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=1")
-  log("*** channel 1 track URL: #{channel_1}")
-  request.create(temporary=true, channel_1)
+# Function to fetch a track URL from the backend API
+def fetch_track(channel_id)
+  url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=#{channel_id}")
+  log("*** Channel #{channel_id} track URL: #{url}")
+  request.create(temporary=true, url)
 end
 
-def fetch_channel_two()
-channel_2 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=2")
-  log("*** channel 2 track URL: #{channel_2}")
-  request.create(temporary=true, channel_2)
+# Dynamic source that fetches a new track only when the current one ends
+def dynamic_track(channel_id)
+  # Create a source that fetches one track at a time
+  s = request.dynamic(fun () -> fetch_track(channel_id))
+  # Trigger a new fetch when the track ends
+  s = on_end(fun () -> ignore(fetch_track(channel_id)), s)
+  s
 end
 
-# Request source using dynamic API
-ch1 = request.dynamic(fetch_channel_one)
-stream1 = amplify(1.5, add([live, ch1]))
+# Create sources for each channel
+ch1 = dynamic_track(1)
+ch2 = dynamic_track(2)
 
-ch2 = request.dynamic(fetch_channel_two)
-stream2 = amplify(1.5, add([blank(), ch2]))
+# Stream 1: Fallback to live if ch1 is not available
+stream1 = amplify(1.5, fallback([ch1, live]))
+
+# Stream 2: Play ch2, fallback to blank
+stream2 = amplify(1.5, fallback([ch2, blank()]))
 
 # Output Stream 1
 output.icecast(
@@ -48,7 +52,7 @@ output.icecast(
   password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
   mount="/stream1",
   buffer=0.1,
-  max_buffer=0.5,
+  max_buffer=0.5
 )
 
 # Output Stream 2
@@ -60,5 +64,5 @@ output.icecast(
   password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
   mount="/stream2",
   buffer=0.1,
-  max_buffer=0.5,
+  max_buffer=0.5
 )
