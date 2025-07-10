@@ -64,9 +64,7 @@ class PlayController extends Controller
     {
         $currentMusic = $this->getPlaylistMusics($playlist);
 
-        Log::channel('radio_broadcast')->info('music started', [
-            'music' => $currentMusic,
-        ]);
+        Log::channel('radio_broadcast')->info('music started');
 
         if ($currentMusic) {
             die($currentMusic);
@@ -84,9 +82,7 @@ class PlayController extends Controller
         if ($likePlaylist) {
             $currentMusic = $this->getPlaylistMusics($likePlaylist);
 
-            Log::channel('radio_broadcast')->info('liked started', [
-                'music' => $currentMusic,
-            ]);
+            Log::channel('radio_broadcast')->info('liked started');
 
             if ($currentMusic) {
                 die($currentMusic);
@@ -128,6 +124,10 @@ class PlayController extends Controller
 
             $currentMusic->where('music_id', $currentMusic->music->id)->where('playlist_id', $currentMusic->playlist_id)
                 ->update(['play_status' => 'playing', 'updated_at' => now()]);
+
+            Log::channel('radio_broadcast')->info('music found', [
+                'music_id' => $currentMusic->music->id,
+            ]);
 
             return asset(Storage::url($currentMusic->music->music), false);
         } else {
