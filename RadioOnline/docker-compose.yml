@@ -87,7 +87,7 @@ services:
         build:
             context: .
             dockerfile: ./docker/liquidsoap.Dockerfile
-        image: savonet/liquidsoap:v2.3.3
+        #image: savonet/liquidsoap:v2.3.3
         container_name: liquidsoap
         volumes:
             - ./docker/liquidsoap/radio.liq:/radio.liq
