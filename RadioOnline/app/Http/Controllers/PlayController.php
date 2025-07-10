@@ -26,7 +26,6 @@ class PlayController extends Controller
     public function play(Request $request): void
     {
         Log::channel('radio_broadcast')->info('play method called', [
-            'uuid' => $this->request_uuid,
             'channel_id' => $request->input('channel_id')
         ]);
 
@@ -41,8 +40,6 @@ class PlayController extends Controller
         $playlist = $playlist->first();
 
         Log::channel('radio_broadcast')->info('playlist type found', [
-            'uuid' => $this->request_uuid,
-            'channel_id' => $request->input('channel_id'),
             'playlist_type' => $playlist?->playlist_type,
         ]);
 
@@ -56,9 +53,7 @@ class PlayController extends Controller
 
     private function handleLivePlaylist(Playlist $playlist): void
     {
-        Log::channel('radio_broadcast')->info('live started', [
-            'uuid' => $this->request_uuid,
-        ]);
+        Log::channel('radio_broadcast')->info('live started');
 
         $this->storeCachePlaylist($playlist);
         sleep(5);
@@ -70,7 +65,6 @@ class PlayController extends Controller
         $currentMusic = $this->getPlaylistMusics($playlist);
 
         Log::channel('radio_broadcast')->info('music started', [
-            'uuid' => $this->request_uuid,
             'music' => $currentMusic,
         ]);
 
@@ -91,7 +85,6 @@ class PlayController extends Controller
             $currentMusic = $this->getPlaylistMusics($likePlaylist);
 
             Log::channel('radio_broadcast')->info('liked started', [
-                'uuid' => $this->request_uuid,
                 'music' => $currentMusic,
             ]);
 
