@@ -17,7 +17,7 @@ class PlayController extends Controller
 
     public function __construct()
     {
-        $this->request_uuid = Str::uuid();
+        $this->request_uuid = (string)Str::uuid();
         Log::channel('radio_broadcast')->info('PlayController initialized', [
             'uuid' => $this->request_uuid
         ]);
