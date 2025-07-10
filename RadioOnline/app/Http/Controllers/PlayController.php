@@ -116,6 +116,12 @@ class PlayController extends Controller
      */
     private function getPlaylistMusics(Playlist $playlist): string|null
     {
+        PlaylistMusic::query()
+            ->where('playlist_id', $playlist->id)
+            ->where('play_status', 'playing')
+            ->orderBy('position')
+            ->update(['play_status' => 'played', 'updated_at' => now()]);
+
         $currentMusic = PlaylistMusic::query()
             ->with('music')
             ->where('playlist_id', $playlist->id)
@@ -129,13 +135,6 @@ class PlayController extends Controller
 
             $currentMusic->where('music_id', $currentMusic->music->id)->where('playlist_id', $currentMusic->playlist_id)
                 ->update(['play_status' => 'playing', 'updated_at' => now()]);
-
-            PlaylistMusic::query()
-                ->where('playlist_id', $playlist->id)
-                ->where('play_status', 'playing')
-                ->where('music_id', '!=', $currentMusic->music->id)
-                ->orderBy('position')
-                ->update(['play_status' => 'played', 'updated_at' => now()]);
 
             return asset(Storage::url($currentMusic->music->music), false);
         } else {
