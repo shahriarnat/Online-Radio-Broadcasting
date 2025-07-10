@@ -41,7 +41,8 @@ stream2 = amplify(1.5, add([blank(), ch2]))
 
 # Output Stream 1
 output.icecast(
-  %mp3,
+  # %mp3,
+  %opus(bitrate=96)
   stream1,
   host="icecast",
   port=1990,
@@ -51,7 +52,8 @@ output.icecast(
 
 # Output Stream 2
 output.icecast(
-  %mp3,
+  # %mp3,
+  %opus(bitrate=96)
   stream2,
   host="icecast",
   port=1990,
