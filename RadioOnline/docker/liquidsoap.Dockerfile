@@ -6,7 +6,7 @@ USER root
 # Ensure apt works and install curl
 RUN mkdir -p /var/lib/apt/lists/partial && \
     apt-get update && \
-    apt-get install -y vim curl cron && \
+    apt-get install -y libmp3lame-dev libshine-dev vim curl cron && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a cron job

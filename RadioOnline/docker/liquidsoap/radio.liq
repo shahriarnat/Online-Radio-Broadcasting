@@ -21,15 +21,15 @@ live  = mksafe(input.http("http://icecast:1990/live"))
 
 # Function to get the next track URL from your API
 def fetch_channel_one()
-url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=1")
-  log("*** channel 1 track URL: #{url}")
-  request.create(temporary=true, url)
+channel_1 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=1")
+  log("*** channel 1 track URL: #{channel_1}")
+  request.create(temporary=true, channel_1)
 end
 
 def fetch_channel_two()
-url = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=2")
-  log("*** channel 2 track URL: #{url}")
-  request.create(temporary=true, url)
+channel_2 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=2")
+  log("*** channel 2 track URL: #{channel_2}")
+  request.create(temporary=true, channel_2)
 end
 
 # Request source using dynamic API
