@@ -1,4 +1,4 @@
-FROM savonet/liquidsoap
+FROM savonet/liquidsoap:fd43b31
 
 # Switch to root to install packages
 USER root
