@@ -6,12 +6,29 @@ use App\Models\Playlist;
 use App\Models\PlaylistMusic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PlayController extends Controller
 {
+
+    private $request_uuid;
+
+    public function __construct()
+    {
+        $this->request_uuid = Str::uuid();
+        Log::channel('radio_broadcast')->info('PlayController initialized', [
+            'uuid' => $this->request_uuid
+        ]);
+    }
+
     public function play(Request $request): void
     {
+        Log::channel('radio_broadcast')->info('PlayController play method called', [
+            'uuid' => $this->request_uuid,
+            'channel_id' => $request->input('channel_id')
+        ]);
 
         $playlist = Playlist::query()
             ->where('channel_playlist', $request->input('channel_id'))
@@ -23,6 +40,12 @@ class PlayController extends Controller
 
         $playlist = $playlist->first();
 
+        Log::channel('radio_broadcast')->info('PlayController playlist type found', [
+            'uuid' => $this->request_uuid,
+            'channel_id' => $request->input('channel_id'),
+            'playlist_type' => $playlist?->playlist_type,
+        ]);
+
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
             'music' => $this->handleMusicPlaylist($playlist),
@@ -33,6 +56,10 @@ class PlayController extends Controller
 
     private function handleLivePlaylist(Playlist $playlist): void
     {
+        Log::channel('radio_broadcast')->info('PlayController live started', [
+            'uuid' => $this->request_uuid,
+        ]);
+
         $this->storeCachePlaylist($playlist);
         sleep(5);
         die('# live on air');
@@ -41,6 +68,11 @@ class PlayController extends Controller
     private function handleMusicPlaylist(Playlist $playlist): void
     {
         $currentMusic = $this->getPlaylistMusics($playlist);
+
+        Log::channel('radio_broadcast')->info('PlayController music started', [
+            'uuid' => $this->request_uuid,
+            'music' => $currentMusic,
+        ]);
 
         if ($currentMusic) {
             die($currentMusic);
@@ -57,6 +89,11 @@ class PlayController extends Controller
 
         if ($likePlaylist) {
             $currentMusic = $this->getPlaylistMusics($likePlaylist);
+
+            Log::channel('radio_broadcast')->info('PlayController liked started', [
+                'uuid' => $this->request_uuid,
+                'music' => $currentMusic,
+            ]);
 
             if ($currentMusic) {
                 die($currentMusic);
@@ -79,13 +116,6 @@ class PlayController extends Controller
      */
     private function getPlaylistMusics(Playlist $playlist): string|null
     {
-        PlaylistMusic::query()
-            ->with('music')
-            ->where('playlist_id', $playlist->id)
-            ->where('play_status', 'playing')
-            ->orderBy('position')
-            ->update(['play_status' => 'played', 'updated_at' => now()]);
-
         $currentMusic = PlaylistMusic::query()
             ->with('music')
             ->where('playlist_id', $playlist->id)
