@@ -21,6 +21,7 @@ use App\Services\Interfaces\MediaServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -204,6 +205,11 @@ class MusicController extends Controller
             return ApiResponse::error($e->getMessage());
         }
 
+    }
+
+    public function stats()
+    {
+        Log::channel('radio_broadcast')->info('stats method called', request()->all());
     }
 
     public function like()

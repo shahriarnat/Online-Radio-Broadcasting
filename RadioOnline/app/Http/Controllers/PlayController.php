@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class PlayController extends Controller
 {
 
-    private $request_uuid;
+    private string $request_uuid;
 
     public function __construct()
     {
