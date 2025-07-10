@@ -73,7 +73,7 @@ services:
     player:
         build:
             context: .
-            dockerfile: ../../RadioFront/.Dockerfile
+            dockerfile: ../../RadioFront/Dockerfile
         container_name: player
         restart: always
         networks:
