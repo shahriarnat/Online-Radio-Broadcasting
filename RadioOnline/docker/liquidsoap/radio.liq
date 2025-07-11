@@ -4,13 +4,14 @@ settings.init.allow_root := true
 settings.log.level := 3
 
 settings.server.telnet := true
+settings.server.telnet.bind_addr := "127.0.0.1"
 settings.server.telnet.port := 1234
 
-#settings.crossfade.assume_autocue := true
-
-#settings.autocue.preferred := "internal"
-
+settings.crossfade.assume_autocue := true
+settings.autocue.preferred := "internal"
 settings.init.force_start := true
+settings.frame.duration := 0.02
+settings.request.prefetch := 0
 
 # Inputs
 #music = mksafe(input.http("http://icecast:1990/music.mp3"))
@@ -21,13 +22,13 @@ live  = mksafe(input.http("http://icecast:1990/live"))
 
 # Function to get the next track URL from your API
 def fetch_channel_one()
-channel_1 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=1")
+channel_1 = process.read("curl -s -A 'RadioLiquidSoap/1.0' -H 'Accept: audio/x-scpls' http://backend:8000/track?channel_id=1")
   log("*** channel 1 track URL: #{channel_1}")
   request.create(temporary=true, channel_1)
 end
 
 def fetch_channel_two()
-channel_2 = process.read("curl -s -A 'RadioLiquidSoap/1.0' http://backend:8000/track.pls?channel_id=2")
+channel_2 = process.read("curl -s -A 'RadioLiquidSoap/1.0' -H 'Accept: audio/x-scpls' http://backend:8000/track?channel_id=2")
   log("*** channel 2 track URL: #{channel_2}")
   request.create(temporary=true, channel_2)
 end
@@ -47,8 +48,6 @@ output.icecast(
   port=1990,
   password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
   mount="/stream1",
-  buffer=0.1,
-  max_buffer=0.5,
 )
 
 # Output Stream 2
@@ -59,6 +58,4 @@ output.icecast(
   port=1990,
   password="source.r5UeMAsbJFfNwuW9ycCgqd2Gt",
   mount="/stream2",
-  buffer=0.1,
-  max_buffer=0.5,
 )
