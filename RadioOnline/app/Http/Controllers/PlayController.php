@@ -110,7 +110,7 @@ class PlayController extends Controller
 
         if (isset($readCache['next_track_sec']) && now()->timestamp + $readCache['next_track_sec'] >= now()->timestamp) {
             sleep(1);
-            die;
+            die('remaining time: ' . (now()->timestamp - (now()->timestamp + $readCache['next_track_sec'])) . ' seconds');
         }
 
         PlaylistMusic::query()
