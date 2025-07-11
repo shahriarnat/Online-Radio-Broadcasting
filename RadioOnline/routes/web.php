@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/track.pls', [PlayController::class, 'play'])->name('play');
+Route::get('/track', [PlayController::class, 'play'])->name('play');

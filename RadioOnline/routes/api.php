@@ -12,7 +12,7 @@ use App\Http\Controllers\GeneralController;
 Route::prefix('general')->group(function () {
     Route::get('info', [GeneralController::class, 'info'])->name('general.info')->middleware(VisitorsMiddleware::class);
     Route::post('like', [MusicController::class, 'like'])->name('general.like');
-    Route::get('stats', [MusicController::class, 'stats'])->name('general.stats');
+//    Route::get('stats', [MusicController::class, 'stats'])->name('general.stats');
 });
 
 /*
