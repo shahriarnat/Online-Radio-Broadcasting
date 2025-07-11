@@ -11,7 +11,7 @@ settings.crossfade.assume_autocue := true
 settings.autocue.preferred := "internal"
 settings.init.force_start := true
 settings.frame.duration := 0.02
-settings.request.prefetch := 0
+settings.request.prefetch := 1
 
 # Inputs
 #music = mksafe(input.http("http://icecast:1990/music.mp3"))

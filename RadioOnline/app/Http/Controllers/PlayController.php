@@ -108,8 +108,10 @@ class PlayController extends Controller
         $channel_id = (int)request()->get('channel_id');
         $readCache = Cache::store('database')->get(config('cache.radio_broadcast_channel_name') . $channel_id);
 
-        if (isset($readCache['timestamp']) && $readCache['timestamp'] + 10 > now()->timestamp)
-            sleep(10);
+        if (isset($readCache['next_track_sec']) && now()->timestamp + $readCache['next_track_sec'] >= now()->timestamp) {
+            sleep(1);
+            die;
+        }
 
         PlaylistMusic::query()
             ->where('playlist_id', $playlist->id)
@@ -148,7 +150,7 @@ class PlayController extends Controller
     private function storeCachePlaylist(Playlist $playlist, $music = null): void
     {
         $params = [
-            'timestamp' => now()->timestamp,
+            'next_track_sec' => $music->duration ?? 0,
             'channel_id' => $playlist->channel_playlist,
             'playlist_type' => $playlist->playlist_type,
             'playlist_id' => $playlist->id,
