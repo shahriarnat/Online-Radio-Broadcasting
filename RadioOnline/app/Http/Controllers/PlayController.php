@@ -108,7 +108,7 @@ class PlayController extends Controller
         $channel_id = (int)request()->get('channel_id');
         $readCache = Cache::store('database')->get(config('cache.radio_broadcast_channel_name') . $channel_id);
 
-        if ($readCache['timestamp'] + 10 > now()->timestamp)
+        if (isset($readCache['timestamp']) && $readCache['timestamp'] + 10 > now()->timestamp)
             return '# already playing';
 
         PlaylistMusic::query()
