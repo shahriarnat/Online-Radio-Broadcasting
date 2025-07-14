@@ -18,7 +18,7 @@ class GeneralController extends Controller
     {
 
         $trigger = RateLimiter::attempt(
-            'get_info-' . request()->getClientIp(), 10, function () {
+            'get_info-' . request()->getClientIp(), 15, function () {
         }, 60);
 
         if (!$trigger) {
