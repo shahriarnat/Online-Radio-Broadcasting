@@ -73,7 +73,7 @@ services:
     player:
         build:
             context: .
-            dockerfile: ./player/Dockerfile
+            dockerfile: ./docker/player.Dockerfile
         container_name: player
         restart: always
         networks:
