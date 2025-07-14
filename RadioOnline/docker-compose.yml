@@ -73,13 +73,11 @@ services:
     player:
         build:
             context: .
-            dockerfile: ../../RadioFront/Dockerfile
+            dockerfile: ./player/Dockerfile
         container_name: player
         restart: always
         networks:
             - app_network
-        ports:
-            - '127.0.0.1:3000:3000'
         environment:
             - TZ=Asia/Tehran
 
