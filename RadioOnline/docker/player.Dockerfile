@@ -4,7 +4,7 @@ WORKDIR /app
 RUN npm ci
 
 FROM node:20-alpine AS production-dependencies-env
-COPY ./player/package.json package-lock.json /app/
+COPY ./player/package.json /app/
 WORKDIR /app
 RUN npm ci --omit=dev
 
@@ -15,7 +15,7 @@ WORKDIR /app
 RUN npm run build
 
 FROM node:20-alpine
-COPY ./player/package.json package-lock.json /app/
+COPY ./player/package.json /app/
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 WORKDIR /app
