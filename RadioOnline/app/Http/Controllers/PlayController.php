@@ -150,7 +150,7 @@ class PlayController extends Controller
     private function storeCachePlaylist(Playlist $playlist, $music = null): void
     {
         $params = [
-            'next_track_sec' => $music?->duration ? $music->duration + now()->timestamp : 0,
+            'next_track_sec' => $music?->duration ? $music->duration + now()->timestamp + 4 : 0,
             'channel_id' => $playlist->channel_playlist,
             'playlist_type' => $playlist->playlist_type,
             'playlist_id' => $playlist->id,
