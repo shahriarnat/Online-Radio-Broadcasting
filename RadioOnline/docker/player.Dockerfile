@@ -6,7 +6,7 @@
 FROM node:20-alpine AS production-dependencies-env
 COPY ./player /app
 WORKDIR /app
-RUN npm ci --omit=dev
+RUN npm i
 RUN npm run build
 
 #FROM node:20-alpine AS build-env
