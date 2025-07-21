@@ -80,6 +80,17 @@ services:
             - app_network
         environment:
             - TZ=Asia/Tehran
+            -
+    panel:
+        build:
+            context: .
+            dockerfile: ./docker/panel.Dockerfile
+        container_name: panel
+        restart: always
+        networks:
+            - app_network
+        environment:
+            - TZ=Asia/Tehran
 
     liquidsoap:
         build:
