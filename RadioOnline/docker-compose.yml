@@ -80,7 +80,7 @@ services:
             - app_network
         environment:
             - TZ=Asia/Tehran
-            -
+
     panel:
         build:
             context: .
