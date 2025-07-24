@@ -1,22 +1,40 @@
-#FROM node:20-alpine AS development-dependencies-env
-#COPY ./player/ /app
-#WORKDIR /app
-#RUN npm ci
+FROM node:20-alpine AS deps
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./panel /app
 WORKDIR /app
-RUN npm i
-RUN npm run build
 
-#FROM node:20-alpine AS build-env
-#COPY ./player/ /app/
-#COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-#WORKDIR /app
-#RUN npm run build
+RUN npm install -g pnpm
 
-FROM node:20-alpine
-COPY --from=production-dependencies-env /app /app
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
+
+FROM node:20-alpine AS builder
+
 WORKDIR /app
+
+RUN npm install -g pnpm
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=deps /app/package.json ./package.json
+
+COPY ./panel .
+
+RUN pnpm build
+
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+RUN npm install -g pnpm
+
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+
+CMD ["pnpm", "start"]
