@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PlaylistOverlapPreventRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLiveRequest extends FormRequest
@@ -22,7 +23,13 @@ class StoreLiveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required', 'string', 'max:255', new PlaylistOverlapPreventRule(
+                1,
+                $this->input('start_date'),
+                $this->input('end_date'),
+                $this->input('start_time'),
+                $this->input('end_time')
+            ),
             'description' => 'nullable|string|max:1000',
             'presenter' => 'required|array',
             'presenter.*.name' => 'required|string|max:255',

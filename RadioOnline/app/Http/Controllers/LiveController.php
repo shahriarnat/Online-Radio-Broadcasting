@@ -23,19 +23,7 @@ class LiveController extends Controller
     public function store(StoreLiveRequest $request): JsonResponse
     {
         $default_channel = 1;
-        /* Check for overlapping playlists */
-        $overlap = Playlist::query()
-            ->where('channel_playlist', $default_channel)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('start_time', [$request->input('start_time'), $request->input('end_time')])
-                    ->orWhereBetween('end_time', [$request->input('start_time'), $request->input('end_time')]);
-            })
-            ->exists();
-
-        if ($overlap) {
-            return ApiResponse::error(__('playlist.time_overlap_error'));
-        }
-
+        
         try {
             // Create a new playlist with live
             $playlist = Playlist::create([

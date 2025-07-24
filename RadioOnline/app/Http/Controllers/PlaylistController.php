@@ -51,13 +51,17 @@ class PlaylistController extends Controller
         $overlap = Playlist::query()
             ->where('channel_playlist', $request->input('channel_playlist'))
             ->where(function ($query) use ($request) {
-                $query->whereBetween('start_time', [$request->input('start_time'), $request->input('end_time')])
-                    ->orWhereBetween('end_time', [$request->input('start_time'), $request->input('end_time')]);
+                $query->whereBetween('start_date', [$request->input('start_date'), $request->input('end_date')]);
+                $query->orWhereBetween('end_date', [$request->input('end_date'), $request->input('end_date')]);
             })
-            ->exists();
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('start_time', [$request->input('start_time'), $request->input('end_time')]);
+                $query->orWhereBetween('end_time', [$request->input('start_time'), $request->input('end_time')]);
+            })
+            ->first();
 
         if ($overlap) {
-            return ApiResponse::error(__('playlist.time_overlap_error'));
+            return ApiResponse::error(__('playlist.time_overlap_error', ['playlist_name' => $overlap->name, 'start_time' => $overlap->start_time, 'end_time' => $overlap->end_time]));
         }
 
         try {
@@ -82,21 +86,6 @@ class PlaylistController extends Controller
     public function update(UpdatePlaylistRequest $request): JsonResponse
     {
         try {
-
-            /* Check for overlapping playlists */
-            $overlap = Playlist::query()
-                ->where('channel_playlist', $request->input('channel_playlist'))
-                ->where('id', '!=', $request->id) // Exclude the current playlist being updated
-                ->where(function ($query) use ($request) {
-                    $query->whereBetween('start_time', [$request->input('start_time'), $request->input('end_time')])
-                        ->orWhereBetween('end_time', [$request->input('start_time'), $request->input('end_time')]);
-                })
-                ->exists();
-
-            if ($overlap) {
-                return ApiResponse::error(__('playlist.time_overlap_error'));
-            }
-
             $playlist = Playlist::findOrFail($request->id);
             $playlist->update([
                 'channel_playlist' => $request->input('channel_playlist'),
