@@ -97,6 +97,9 @@ class MusicController extends Controller
      */
     public function store(StoreMusicRequest $request): JsonResponse
     {
+        ini_set('max_execution_time', 0); // Unlimited execution time
+        set_time_limit(0);                // Also helps ensure no timeout
+
         try {
             $music = $request->file('music');
             $musicPath = Str::random(64) . '.' . $music->getClientOriginalExtension();
