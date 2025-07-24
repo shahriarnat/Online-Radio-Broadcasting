@@ -38,12 +38,13 @@ class MusicController extends Controller
     public function properties(): JsonResponse
     {
         return ApiResponse::success([
-            'playlists' => Playlist::all()
+            'playlists' => Playlist::query()
                 ->where('playlist_type', 'music')
                 ->where('activate', 1)
+                ->get()
                 ->map(function ($playlist) {
                     return ['id' => $playlist->id, 'name' => $playlist->name];
-                })?->toArray(),
+                }),
             'genres' => Genre::all()->map(function ($genre) {
                 return ['id' => $genre->id, 'name' => $genre->name];
             }),
