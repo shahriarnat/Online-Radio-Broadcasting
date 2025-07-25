@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
+/**
+ * @method static Builder|Music Ads()
+ * @method static Builder|Music noAds()
+ * @method static Builder|Music filtering(array $filters = [])
+ * @method static Builder|Music paginating(int $perPage = 30, int $page = 1)
+ * @method static Builder|Music sorting(string $sortBy = 'id', string $sortOrder = 'asc')
+ */
 class Music extends Model
 {
 
@@ -33,6 +40,16 @@ class Music extends Model
     public function genre()
     {
         return $this->belongsTo(Genre::class);
+    }
+
+    public function scopeAds($query)
+    {
+        $query->where('is_ads', true);
+    }
+
+    public function scopeNoAds($query)
+    {
+        $query->where('is_ads', false);
     }
 
     public function scopeFiltering($query, $filters = [])

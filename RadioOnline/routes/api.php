@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LiveController;
 use App\Http\Middleware\VisitorsMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,6 @@ use App\Http\Controllers\GeneralController;
 Route::prefix('general')->group(function () {
     Route::get('info', [GeneralController::class, 'info'])->name('general.info')->middleware(VisitorsMiddleware::class);
     Route::post('like', [MusicController::class, 'like'])->name('general.like');
-//    Route::get('stats', [MusicController::class, 'stats'])->name('general.stats');
 });
 
 /*
@@ -73,4 +73,11 @@ Route::prefix('live')->middleware('auth:sanctum')->group(function () {
 Route::prefix('broadcaster')->middleware('auth:sanctum')->group(function () {
     Route::get('listener', [BroadcasterController::class, 'listener'])->name('broadcaster.listener');
     Route::get('stats', [BroadcasterController::class, 'stats'])->name('broadcaster.stats');
+});
+
+/*
+ * The following section defines routes for the 'dashboard' resource, which are protected by the 'auth:sanctum' middleware.
+ */
+Route::prefix('dashboard')->middleware('auth:sanctum')->group(function () {
+    Route::get('info', [DashboardController::class, 'info'])->name('dashboard.info');
 });
