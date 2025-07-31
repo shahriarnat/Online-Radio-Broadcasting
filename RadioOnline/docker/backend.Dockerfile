@@ -19,6 +19,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . /var/www/html
 
 # Copy configs
+COPY ./docker/php/custom.ini /etc/frankenphp/php.d/custom.ini
 COPY ./docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./docker/supervisor/supervisor-backend.conf /etc/supervisor/conf.d/supervisor-backend.conf
