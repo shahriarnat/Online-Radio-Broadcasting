@@ -37,7 +37,6 @@ class PlayController extends Controller
             ->where('end_time', '>=', now()->toTimeString())
             ->where('activate', 1);
 
-dd($playlist->toRawSql());
         $playlist = $playlist->first();
         Log::channel('radio_broadcast')->info('playlist type found', [
             'playlist_type' => $playlist?->playlist_type,
