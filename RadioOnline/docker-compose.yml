@@ -111,7 +111,7 @@ liquidsoap:
     deploy:
         resources:
             limits:
-                cpus: "0.5"
+                cpus: '0.7'
     logging:
         driver: "json-file"
         options:
