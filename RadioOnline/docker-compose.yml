@@ -92,28 +92,25 @@ services:
         environment:
             - TZ=Asia/Tehran
 
-liquidsoap:
-    build:
-        context: .
-        dockerfile: ./docker/liquidsoap.Dockerfile
-    #image: savonet/liquidsoap:v2.3.3
-    container_name: liquidsoap
-    volumes:
-        - ./docker/liquidsoap/radio.liq:/radio.liq
-    ports:
-        - 127.0.0.1:9090:1234
-    networks:
-        - app_network
-    command: [ "liquidsoap", "/radio.liq" ]
-    environment:
-        - TZ=Asia/Tehran
-    restart: always
-    deploy:
-        resources:
-            limits:
-                cpus: '0.7'
-    logging:
-        driver: "json-file"
-        options:
-            max-size: "10m"
-            max-file: "3"
+    liquidsoap:
+        build:
+            context: .
+            dockerfile: ./docker/liquidsoap.Dockerfile
+        container_name: liquidsoap
+        volumes:
+            - ./docker/liquidsoap/radio.liq:/radio.liq
+        ports:
+            - 127.0.0.1:9090:1234
+        networks:
+            - app_network
+        command: [ "liquidsoap", "/radio.liq" ]
+        environment:
+            - TZ=Asia/Tehran
+        restart: always
+        cpus: 0.7
+        mem_limit: 512m
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "3"
