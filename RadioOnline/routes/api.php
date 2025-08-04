@@ -80,4 +80,6 @@ Route::prefix('broadcaster')->middleware('auth:sanctum')->group(function () {
  */
 Route::prefix('dashboard')->middleware('auth:sanctum')->group(function () {
     Route::get('info', [DashboardController::class, 'info'])->name('dashboard.info');
+    Route::get('logs', [DashboardController::class, 'logs'])->name('dashboard.logs');
+    Route::get('resources', [DashboardController::class, 'resources'])->name('dashboard.resources');
 });
