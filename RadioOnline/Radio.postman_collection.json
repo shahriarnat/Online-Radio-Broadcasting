@@ -2220,6 +2220,66 @@
 							"body": "{\n    \"message\": \"Success\",\n    \"status\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"listeners\": 2,\n        \"musics\": 3,\n        \"most_liked_musics\": [],\n        \"visitors\": []\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "[NOT USE] Resources",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/resources",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard",
+								"resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logs",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard",
+								"logs"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -2604,6 +2664,77 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"message\": \"Success\",\n    \"status\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"app_name\": \"RadioOnline\",\n        \"app_url\": \"http://localhost\",\n        \"stream_url\": \"http://localhost:8000/stream\",\n        \"app_locale\": \"fa\",\n        \"channels\": [\n            {\n                \"id\": 1,\n                \"name\": \"Channel One\",\n                \"slug\": \"CH1\",\n                \"description\": \"Default Description\",\n                \"stream_address\": \"/stream1\",\n                \"current_playing\": {\n                    \"id\": 7,\n                    \"title\": \"Explicabo voluptatem sapiente facere natus.\",\n                    \"artist\": \"Dr. Maxwell Langosh\",\n                    \"duration\": 177,\n                    \"cover\": \"http://localhost:8000/storage/covers/fbb9c88789acab6df313d5e559513362.jpg\",\n                    \"like\": 4933,\n                    \"ads\": false,\n                    \"mode\": \"music\"\n                }\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Channel Two\",\n                \"slug\": \"CH2\",\n                \"description\": \"Default Description\",\n                \"stream_address\": \"/stream2\",\n                \"current_playing\": null\n            }\n        ]\n    }\n}"
+						},
+						{
+							"name": "Live",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/general/info",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"general",
+										"info"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "openresty"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Jul 2025 19:58:05 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Host",
+									"value": "dash.livemst.com"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.4.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Served-By",
+									"value": "dash.livemst.com"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Success\",\n    \"status\": \"success\",\n    \"code\": 200,\n    \"data\": {\n        \"app_name\": \"RadioOnline\",\n        \"app_url\": \"https://dash.livemst.com\",\n        \"stream_url\": \"https://play.livemst.com\",\n        \"app_locale\": \"fa\",\n        \"channels\": [\n            {\n                \"id\": 1,\n                \"name\": \"Channel One\",\n                \"slug\": \"CH1\",\n                \"description\": \"Default Description\",\n                \"stream_address\": \"/stream1\",\n                \"current_playing\": {\n                    \"id\": 29,\n                    \"title\": \"تست لایو\",\n                    \"description\": null,\n                    \"mode\": \"live\",\n                    \"presenter\": [\n                        {\n                            \"name\": \"تست\"\n                        },\n                        {\n                            \"name\": \"تست 2\"\n                        }\n                    ]\n                }\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Channel Two\",\n                \"slug\": \"CH2\",\n                \"description\": \"Default Description\",\n                \"stream_address\": \"/stream2\",\n                \"current_playing\": {\n                    \"id\": 7,\n                    \"title\": \"The 9 Sesons: Violin Concerto - test edit\",\n                    \"artist\": \"Takako Nishizaki - edit\",\n                    \"duration\": 287,\n                    \"cover\": \"https://dash.livemst.com/storage/covers/hGVcpgt1BORY7iM3yA8hNk7oMx8xRgUYDBqquuxE.png\",\n                    \"like\": 5,\n                    \"ads\": true,\n                    \"mode\": \"music\"\n                }\n            }\n        ]\n    }\n}"
 						}
 					]
 				},
