@@ -61,7 +61,12 @@ class PlaylistController extends Controller
             ->first();
 
         if ($overlap) {
-            return ApiResponse::error(__('playlist.time_overlap_error', ['playlist_name' => $overlap->name, 'start_time' => $overlap->start_time, 'end_time' => $overlap->end_time]));
+            return ApiResponse::error(__('playlist.time_overlap_error', [
+                'playlist_type' => __('playlist.time_overlap_error_type.' . $overlap->playlist_type),
+                'playlist_name' => $overlap->name,
+                'start_time' => $overlap->start_time,
+                'end_time' => $overlap->end_time
+            ]));
         }
 
         try {

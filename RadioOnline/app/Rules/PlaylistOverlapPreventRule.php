@@ -59,6 +59,13 @@ class PlaylistOverlapPreventRule implements ValidationRule
             })
             ->first();
         if ($overlap)
-            $fail(__('playlist.time_overlap_error', ['playlist_name' => $overlap->name, 'start_time' => $overlap->start_time, 'end_time' => $overlap->end_time]));
+            $fail(__('playlist.time_overlap_error', [
+                        'playlist_type' => __('playlist.time_overlap_error_type.' . $overlap->playlist_type),
+                        'playlist_name' => $overlap->name,
+                        'start_time' => $overlap->start_time,
+                        'end_time' => $overlap->end_time
+                    ]
+                )
+            );
     }
 }

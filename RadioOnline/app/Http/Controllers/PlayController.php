@@ -109,6 +109,13 @@ class PlayController extends Controller
 
         if (isset($readCache['next_track_sec']) && $readCache['next_track_sec'] >= now()->timestamp) {
             sleep(1);
+
+            Log::channel('radio_broadcast')->info('remaining time for next track', [
+                'next_track_sec' => $readCache['next_track_sec'],
+                'current_time' => now()->timestamp,
+                'remaining_seconds' => $readCache['next_track_sec'] - now()->timestamp,
+            ]);
+
             die('remaining time for next track on channel(' . $channel_id . ') ' . ($readCache['next_track_sec'] - now()->timestamp) . ' seconds');
         }
 

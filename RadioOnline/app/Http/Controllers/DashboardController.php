@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use app\Helpers\ApiResponse;
-use App\Models\Channel;
+use App\Helpers\LogReader;
 use App\Models\Music;
 use App\Models\Visitor;
 use App\Services\IcecastService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Number;
+use Stepanenko3\LaravelSystemResources\Facades\SystemResources;
 
 class DashboardController extends Controller
 {
@@ -42,4 +44,37 @@ class DashboardController extends Controller
         ]);
 
     }
+
+    public function logs()
+    {
+        return ApiResponse::success([
+            'logs' => LogReader::readLatestLogFromChannel('radio_broadcast', 50),
+        ]);
+    }
+
+    public function resources()
+    {
+        $ramUsed = SystemResources::ramUsed();
+        $ramTotal = SystemResources::ramTotal();
+
+        $diskUsed = SystemResources::diskUsed();
+        $diskTotal = SystemResources::diskTotal();
+
+        $cpu = SystemResources::cpu() . '%';
+
+        return ApiResponse::success([
+            'ram' => [
+                'used' => number_format($ramUsed / 1024, 2) . ' MB',
+                'total' => number_format($ramTotal / 1024, 2) . ' MB',
+                'percentage' => round(($ramUsed / $ramTotal) * 100, 2),
+            ],
+            'disk' => [
+                'used' => number_format($diskUsed / 1024, 2) . ' MB',
+                'total' => number_format($diskTotal / 1024, 2) . ' MB',
+                'percentage' => round(($diskUsed / $diskTotal) * 100, 2),
+            ],
+            'cpu' => $cpu,
+        ]);
+    }
+
 }
