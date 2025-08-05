@@ -25,9 +25,7 @@ class PlayController extends Controller
 
     public function play(Request $request): void
     {
-        Log::channel('radio_broadcast')->info('play method called', [
-            'channel_id' => $request->input('channel_id')
-        ]);
+        Log::channel('radio_broadcast')->info("play method called (channel: {$request->input('channel_id')})");
 
         $playlist = Playlist::query()
             ->where('channel_playlist', $request->input('channel_id'))
@@ -38,9 +36,7 @@ class PlayController extends Controller
             ->where('activate', 1);
 
         $playlist = $playlist->first();
-        Log::channel('radio_broadcast')->info('playlist type found', [
-            'playlist_type' => $playlist?->playlist_type,
-        ]);
+        Log::channel('radio_broadcast')->info("playlist ({$playlist?->playlist_type}) found");
 
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
@@ -108,15 +104,12 @@ class PlayController extends Controller
         $readCache = Cache::store('database')->get(config('cache.radio_broadcast_channel_name') . $channel_id);
 
         if (isset($readCache['next_track_sec']) && $readCache['next_track_sec'] >= now()->timestamp) {
+
+            Log::channel('radio_broadcast')->info('remaining time for next track on channel(' . $channel_id . ') ' . ($readCache['next_track_sec'] - now()->timestamp) . ' sec');
+
             sleep(1);
 
-            Log::channel('radio_broadcast')->info('remaining time for next track', [
-                'next_track_sec' => $readCache['next_track_sec'],
-                'current_time' => now()->timestamp,
-                'remaining_seconds' => $readCache['next_track_sec'] - now()->timestamp,
-            ]);
-
-            die('remaining time for next track on channel(' . $channel_id . ') ' . ($readCache['next_track_sec'] - now()->timestamp) . ' seconds');
+            die('# remaining time for next track on channel(' . $channel_id . ') ' . ($readCache['next_track_sec'] - now()->timestamp) . ' sec');
         }
 
         PlaylistMusic::query()
@@ -139,9 +132,7 @@ class PlayController extends Controller
             $currentMusic->where('music_id', $currentMusic->music->id)->where('playlist_id', $currentMusic->playlist_id)
                 ->update(['play_status' => 'playing', 'updated_at' => now()]);
 
-            Log::channel('radio_broadcast')->info('music found', [
-                'music_id' => $currentMusic->music->id,
-            ]);
+            Log::channel('radio_broadcast')->info("music found ID: {$currentMusic->music->id}, Title: {$currentMusic->music->title}, Duration: {$currentMusic->music->duration}");
 
             return asset(Storage::url($currentMusic->music->music), false);
         } else {
