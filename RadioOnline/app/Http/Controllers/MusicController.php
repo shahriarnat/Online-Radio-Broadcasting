@@ -205,7 +205,7 @@ class MusicController extends Controller
             foreach ($playlist_music_array as $assign) {
                 $playlist = Playlist::findOrFail($assign['playlist_id']);
                 if ($request->has('add')) {
-                    $playlist->musics()->attach(collect($assign['musics']));
+                    $playlist->musics()->syncWithoutDetaching(collect($assign['musics']));
                 } else {
                     $playlist->musics()->sync(collect($assign['musics']));
                 }
