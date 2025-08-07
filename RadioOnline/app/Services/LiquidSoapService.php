@@ -6,7 +6,7 @@ use App\Services\Interfaces\LiquidSoapInterface;
 
 class LiquidSoapService implements LiquidSoapInterface
 {
-    protected $host = '127.0.0.1';
+    protected $host = 'liquidsoap';
     protected $port = 1234;
     protected $timeout = 10;
     protected $connection;
