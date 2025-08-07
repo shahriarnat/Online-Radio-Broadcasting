@@ -1707,7 +1707,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"assign\": [\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 1,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 2,\r\n            \"music_id\": 2\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 1\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 5\r\n        },\r\n        {\r\n            \"playlist_id\": 3,\r\n            \"music_id\": 6\r\n        },\r\n        {\r\n            \"playlist_id\": 5,\r\n            \"music_id\": 7\r\n        },\r\n        {\r\n            \"playlist_id\": 4,\r\n            \"music_id\": 8\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"assign\": [\r\n        {\r\n            \"playlist_id\": 35,\r\n            \"music_id\": 6\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1715,7 +1715,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/music/assign-bulk",
+							"raw": "{{base_url}}/api/music/assign-bulk?add",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1723,6 +1723,13 @@
 								"api",
 								"music",
 								"assign-bulk"
+							],
+							"query": [
+								{
+									"key": "add",
+									"value": null,
+									"description": "unsign add for bulk"
+								}
 							]
 						}
 					},
@@ -1954,6 +1961,50 @@
 								"api",
 								"music",
 								"properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detach Music",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer <your_token>",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"playlist_id\": 37,\r\n    \"musics\": [\r\n        {\r\n            \"music_id\": 6\r\n        },\r\n        {\r\n            \"music_id\": 5\r\n        }\r\n        // more objects...\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/music/detach",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"music",
+								"detach"
 							]
 						}
 					},
