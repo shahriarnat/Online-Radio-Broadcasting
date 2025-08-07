@@ -1,7 +1,7 @@
 #!/usr/bin/liquidsoap
 
 settings.init.allow_root := true
-settings.log.level := 1
+settings.log.level := 3
 
 settings.crossfade.assume_autocue := true
 settings.autocue.preferred := "internal"
