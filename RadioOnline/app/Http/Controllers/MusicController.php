@@ -6,6 +6,7 @@ use app\Helpers\ApiResponse;
 use App\Http\Requests\AssignBulkMusicPlaylistRequest;
 use App\Http\Requests\AssignMusicPlaylistRequest;
 use App\Http\Requests\DestroyMusicRequest;
+use App\Http\Requests\DetachMusicPlaylistRequest;
 use App\Http\Requests\ShowMusicRequest;
 use App\Http\Requests\ShowMusicsRequest;
 use App\Http\Requests\StoreMusicRequest;
@@ -185,6 +186,19 @@ class MusicController extends Controller
             $playlist = Playlist::findOrFail($items['playlist_id']);
             $playlist->musics()->sync(collect($items['musics'])->pluck('music_id')->toArray());
             return ApiResponse::success($items, __('music.assigned'));
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+
+    }
+
+    public function detach(DetachMusicPlaylistRequest $request)
+    {
+        try {
+            $items = $request->all();
+            $playlist = Playlist::findOrFail($items['playlist_id']);
+            $playlist->musics()->detach(collect($items['musics'])->pluck('music_id')->toArray());
+            return ApiResponse::success(null, __('music.detach'));
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
