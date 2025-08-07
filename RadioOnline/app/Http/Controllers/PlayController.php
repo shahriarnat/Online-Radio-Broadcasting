@@ -52,7 +52,7 @@ class PlayController extends Controller
 
         $this->storeCachePlaylist($playlist);
         sleep(1);
-        die('# live on air');
+        die(asset('blank.mp3', false));
     }
 
     private function handleMusicPlaylist(Playlist $playlist): void
