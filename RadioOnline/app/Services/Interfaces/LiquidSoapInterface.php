@@ -2,7 +2,7 @@
 
 namespace App\Services\Interfaces;
 
-interface LiquidSoapServiceInterface
+interface LiquidSoapInterface
 {
     public function skip(): void;
 

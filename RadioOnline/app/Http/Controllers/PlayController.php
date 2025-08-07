@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Playlist;
 use App\Models\PlaylistMusic;
-use App\Services\Interfaces\LiquidSoapServiceInterface;
-use App\Services\LiquidSoapService;
+use App\Services\Interfaces\LiquidSoapInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -16,11 +15,11 @@ class PlayController extends Controller
 {
 
     private string $request_uuid;
-    protected LiquidSoapServiceInterface $liquidSoapService;
+    protected LiquidSoapInterface $LiquidSoapService;
 
-    public function __construct(LiquidSoapServiceInterface $liquidSoapService)
+    public function __construct(LiquidSoapInterface $LiquidSoap)
     {
-        $this->liquidSoapService = $liquidSoapService;
+        $this->LiquidSoapService = $LiquidSoap;
 
         $this->request_uuid = (string)Str::uuid();
         Log::channel('radio_broadcast')->info('-------------' . PHP_EOL . 'initialized', [
@@ -41,6 +40,7 @@ class PlayController extends Controller
             ->where('activate', 1);
 
         $playlist = $playlist->first();
+
         Log::channel('radio_broadcast')->info("playlist ({$playlist?->playlist_type}) found");
 
         match ($playlist?->playlist_type) {
@@ -53,13 +53,12 @@ class PlayController extends Controller
 
     private function handleLivePlaylist(Playlist $playlist): void
     {
-        Log::channel('radio_broadcast')->info('live started');
-
-        $this->storeCachePlaylist($playlist);
-
         sleep(1);
 
-        $this->liquidSoapService->skip();
+        Log::channel('radio_broadcast')->info('live started');
+        $this->storeCachePlaylist($playlist);
+
+        $this->LiquidSoapService->skip();
 
         die(asset('blank.mp3', false));
     }

@@ -2,21 +2,14 @@
 
 namespace App\Services;
 
-use App\Services\Interfaces\LiquidSoapServiceInterface;
+use App\Services\Interfaces\LiquidSoapInterface;
 
-class LiquidSoapService implements LiquidSoapServiceInterface
+class LiquidSoapService implements LiquidSoapInterface
 {
     protected $host = '127.0.0.1';
     protected $port = 1234;
     protected $timeout = 10;
     protected $connection;
-
-    private function __construct($host = '127.0.0.1', $port = 1234, $timeout = 10)
-    {
-        $this->host = $host;
-        $this->port = $port;
-        $this->timeout = $timeout;
-    }
 
     private function connect(): bool
     {
