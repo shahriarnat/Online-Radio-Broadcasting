@@ -76,17 +76,17 @@ class LiquidSoapService implements LiquidSoapServiceInterface
         $this->exec('output.icecast.skip');
     }
 
-    public function shutdown()
+    public function shutdown(): void
     {
         $this->exec('shutdown');
     }
 
-    public function restart()
+    public function restart(): void
     {
         $this->exec('request.all');
     }
 
-    public function memory_purge()
+    public function memory_purge(): void
     {
         $this->exec('runtime.gc.full_major');
     }
