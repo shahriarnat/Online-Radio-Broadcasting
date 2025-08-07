@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Services\IcecastService;
 use App\Services\Interfaces\IcecastInterface;
+use App\Services\Interfaces\LiquidSoapServiceInterface;
 use App\Services\Interfaces\MediaServiceInterface;
+use App\Services\LiquidSoapService;
 use App\Services\MediaService;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(MediaServiceInterface::class, MediaService::class);
         $this->app->bind(IcecastInterface::class, IcecastService::class);
+        $this->app->bind(LiquidSoapServiceInterface::class, LiquidSoapService::class);
     }
 
     /**
