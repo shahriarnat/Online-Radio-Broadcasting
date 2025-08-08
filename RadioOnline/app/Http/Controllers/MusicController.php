@@ -259,7 +259,7 @@ class MusicController extends Controller
                 // Return success response with the updated like status
                 return ApiResponse::success(['music_id' => $music->id, 'like' => $music->guest_like], __('music.like_success'));
             }
-            return ApiResponse::error(__('music.like_duplicate'), Response::HTTP_TOO_MANY_REQUESTS);
+            return ApiResponse::success(null, __('music.like_duplicate'));
         } catch (\Exception $e) {
             return ApiResponse::error(__('music.like_error'));
         }
