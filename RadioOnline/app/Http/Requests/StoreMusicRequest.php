@@ -22,7 +22,7 @@ class StoreMusicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'music' => 'required|file|mimetypes:audio/mpeg,application/octet-stream|max:51200',
+            'music' => 'required|file|mimetypes:audio/mpeg,application/octet-stream|max:98304',
         ];
 
     }
