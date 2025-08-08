@@ -4,7 +4,7 @@ namespace App\Services\Interfaces;
 
 interface LiquidSoapInterface
 {
-    public function skip(): void;
+    public function skip(string $id): void;
 
     public function shutdown(): void;
 

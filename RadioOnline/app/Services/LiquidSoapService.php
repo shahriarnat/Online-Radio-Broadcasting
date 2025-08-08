@@ -35,6 +35,11 @@ class LiquidSoapService implements LiquidSoapInterface
             $response .= $line;
 
             // Optionally break if prompt detected (depends on your server)
+            if (str_ends_with(trim($line), 'END')) {
+                break;
+            }
+
+            // Optionally break if prompt detected (depends on your server)
             if (str_ends_with(trim($line), '>') || str_ends_with(trim($line), '#')) {
                 break;
             }
@@ -64,9 +69,9 @@ class LiquidSoapService implements LiquidSoapInterface
         return $response;
     }
 
-    public function skip(): void
+    public function skip(string $id): void
     {
-        $this->exec('output.icecast.skip');
+        $this->exec($id . '.skip');
     }
 
     public function shutdown(): void

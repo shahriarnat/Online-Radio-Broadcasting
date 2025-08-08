@@ -46,7 +46,8 @@ class PlayController extends Controller
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
             'music' => $this->handleMusicPlaylist($playlist),
-            default => $this->handleMostLikedPlaylist(),
+            'liked' => $this->handleMostLikedPlaylist(),
+            default => print('# No valid playlist type found'),
         };
 
     }
@@ -58,9 +59,9 @@ class PlayController extends Controller
         Log::channel('radio_broadcast')->info('live started');
         $this->storeCachePlaylist($playlist);
 
-        $this->LiquidSoapService->skip();
+        $this->LiquidSoapService->skip('out_stream1');
 
-        die(asset('blank.mp3', false));
+        die('# live stream on air!');
     }
 
     private function handleMusicPlaylist(Playlist $playlist): void
