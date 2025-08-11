@@ -48,7 +48,7 @@ class DashboardController extends Controller
     public function logs()
     {
         return ApiResponse::success([
-            'logs' => LogReader::readLatestLogFromChannel('radio_broadcast', 50),
+            'logs' => LogReader::readLatestLogFromChannel('radio_broadcast', 10),
         ]);
     }
 
