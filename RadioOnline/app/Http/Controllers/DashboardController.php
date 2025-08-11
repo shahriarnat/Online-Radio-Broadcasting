@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         $icecastService = new IcecastService();
 
-        $musics = Music::NoAds()->count() ?? 0;
+        $musics = Music::count() ?? 0;
 
         $listeners = (int)$icecastService->getStats()['listeners'] ?? 0;
 

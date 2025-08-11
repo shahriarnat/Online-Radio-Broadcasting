@@ -46,8 +46,7 @@ class PlayController extends Controller
         match ($playlist?->playlist_type) {
             'live' => $this->handleLivePlaylist($playlist),
             'music' => $this->handleMusicPlaylist($playlist),
-            'liked' => $this->handleMostLikedPlaylist(),
-            default => print('# No valid playlist type found'),
+            default => $this->handleMostLikedPlaylist(),
         };
 
     }
