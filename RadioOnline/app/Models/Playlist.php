@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 
+/**
+ * @method static Builder|Playlist playlistFilter($request)
+ * @method static Builder|Playlist paginating($perPage = 30, $page = 1)
+ * @method static Builder|Playlist musicType()
+ * @method static Builder|Playlist liveType()
+ * @method static Builder|Playlist podcastType()
+ */
 class Playlist extends Model
 {
     use HasFactory;

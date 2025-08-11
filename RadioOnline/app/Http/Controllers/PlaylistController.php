@@ -18,9 +18,10 @@ class PlaylistController extends Controller
 {
     public function index(AllPlaylistRequest $request): JsonResponse
     {
-        $playlists = Playlist::query()
+        $playlists = Playlist::PlaylistFilter($request)
             ->where('playlist_type', 'music')
-            ->PlaylistFilter($request)
+            ->orderBy('start_date')
+            ->orderBy('start_time')
             ->get();
         if ($playlists) {
             collect($playlists)->each(function ($playlist) {
