@@ -17,4 +17,8 @@ return [
     'playlist_live_created' => 'لایو با موفقیت ایجاد شد.',
     'playlist_live_deleted' => 'لایو با موفقیت حذف شد.',
 
+    'validation' => [
+        'playlist_is_playing' => 'پلی لیست انتخاب شده (:playlist_name) در حال پخش است',
+    ],
+
 ];

@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\PlaylistTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AssignBulkMusicPlaylistRequest extends FormRequest
 {
+    use PlaylistTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,7 +27,16 @@ class AssignBulkMusicPlaylistRequest extends FormRequest
         return [
             'assign' => 'required|array',
             'assign.*.music_id' => 'required|integer|exists:musics,id',
-            'assign.*.playlist_id' => 'required|integer|exists:playlists,id,playlist_type,music',
+            'assign.*.playlist_id' => [
+                'required',
+                'integer',
+                'exists:playlists,id,playlist_type,music',
+                function ($attribute, $value, $fail) {
+                    if ($this->isPlaylistPlaying($value, $name)) {
+                        $fail(__('playlist.validation.playlist_is_playing', ['playlist_name' => $name]));
+                    }
+                }
+            ],
         ];
     }
 }
